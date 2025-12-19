@@ -17,7 +17,7 @@ const FloatingAgent = () => {
     const [messages, setMessages] = useState<Message[]>([
         {
             id: "welcome",
-            text: "Welcome to IQON Global. I am your AI Consultant. How can I assist you today?",
+            text: "Welcome to Qertex Global. I am your AI Consultant. How can I assist you today?",
             sender: "bot",
         },
     ]);
@@ -107,7 +107,7 @@ const FloatingAgent = () => {
                                     </div>
                                 </div>
                                 <div>
-                                    <h3 className="text-sm font-bold text-white">IQON Assistant</h3>
+                                    <h3 className="text-sm font-bold text-white">Qertex Assistant</h3>
                                     <p className="text-xs text-green-500 font-medium">Online</p>
                                 </div>
                             </div>

@@ -15,11 +15,11 @@ export default function AcademyServicesPage() {
                     className="text-center"
                 >
                     <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight">
-                        Forging the Future <br />
-                        <span className="text-iqon-red">Workforce.</span>
+                        Qertex <br />
+                        <span className="text-iqon-red">Academy.</span>
                     </h1>
                     <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
-                        The IQON Academy is a Center of Excellence dedicated to upskilling your teams in the era of AI and Autonomous Quality.
+                        The Qertex Academy is a Center of Excellence dedicated to upskilling your teams in the era of AI and Autonomous Quality.
                     </p>
                 </motion.div>
             </section>
@@ -144,7 +144,7 @@ export default function AcademyServicesPage() {
                         </div>
                         <div className="md:w-1/3 flex justify-center">
                             <a
-                                href="mailto:alhoulsy@gmail.com"
+                                href="mailto:info@qertex.com"
                                 className="inline-flex items-center px-8 py-4 bg-white text-slate-900 font-bold rounded-full hover:bg-gray-100 transition-colors shadow-xl"
                             >
                                 Request Demo <ArrowRight className="w-5 h-5 ml-2" />

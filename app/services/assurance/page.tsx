@@ -15,8 +15,8 @@ export default function AssuranceServicesPage() {
                     className="text-center"
                 >
                     <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight">
-                        Total Digital <br />
-                        <span className="text-iqon-red">Assurance.</span>
+                        Software <br />
+                        <span className="text-iqon-red">Quality.</span>
                     </h1>
                     <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
                         We don't just test; we engineer resilience. A complete Quality Command Center ensuring your systems are precise, resilient, and compliant.

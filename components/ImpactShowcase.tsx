@@ -1,116 +1,100 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
-import Link from "next/link";
 
-const projects = [
+const stats = [
     {
-        id: "taxation",
-        client: "ZATCA",
-        metric: "99.999%",
-        metricLabel: "Uptime",
-        title: "Taxation Infra",
-        link: "/projects/taxation",
+        label: "Legacy of Quality",
+        value: "15+",
+        suffix: "Years",
+        desc: "Of IT Experience in the Gulf Region",
+        color: "from-blue-500 to-cyan-400"
     },
     {
-        id: "labor",
-        client: "HRSD",
-        metric: "5M+",
-        metricLabel: "Users Served",
-        title: "Labor Market",
-        link: "/projects/labor",
+        label: "Artificial Intelligence",
+        value: "Agentic",
+        suffix: "AI",
+        desc: "Building Sovereign Autonomous Enterprise Systems",
+        color: "from-violet-500 to-fuchsia-400"
     },
     {
-        id: "defense",
-        client: "MOD",
-        metric: "0",
-        metricLabel: "Breaches",
-        title: "Sovereign Cloud",
-        link: "/projects/defense",
+        label: "Cybersecurity",
+        value: "Offensive",
+        suffix: "Ops",
+        desc: "Elite Red Teaming & Infrastructure Hardening",
+        color: "from-red-500 to-rose-400"
     },
     {
-        id: "energy",
-        client: "ARAMCO",
-        metric: "40%",
-        metricLabel: "Efficiency",
-        title: "Predictive Maint.",
-        link: "/projects/energy",
+        label: "Domain Expertise",
+        value: "Fintech",
+        suffix: "Experts",
+        desc: "Specialized in Taxation, VAT, & Banking Systems",
+        color: "from-emerald-500 to-green-400"
     },
     {
-        id: "finance",
-        client: "SAMA",
-        metric: "20ms",
-        metricLabel: "Latency",
-        title: "HFT Network",
-        link: "/projects/finance",
+        label: "Global Reach",
+        value: "3",
+        suffix: "Regions",
+        desc: "Operational presence across Middle East & North America",
+        color: "from-purple-500 to-pink-400"
+    },
+    {
+        label: "Process Maturity",
+        value: "TMMi",
+        suffix: "Certified",
+        desc: "World-class Testing Maturity Model Integration",
+        color: "from-orange-500 to-yellow-400"
     },
 ];
 
 const ImpactShowcase = () => {
     return (
-        <section className="py-24 bg-slate-950 relative overflow-hidden">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+        <section className="py-32 bg-slate-950 relative overflow-hidden">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <motion.div
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
+                    className="text-center mb-16"
                 >
-                    <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                        Featured Projects
+                    <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+                        QERTEX TEAM <span className="text-iqon-red">AT A GLANCE</span>
                     </h2>
-                    <div className="w-24 h-1 bg-iqon-red rounded-full" />
+                    <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+                        Combining decades of engineering excellence with cutting-edge AI innovation.
+                    </p>
                 </motion.div>
-            </div>
 
-            {/* Horizontal Scroll Container */}
-            <div className="relative w-full overflow-x-auto pb-12 hide-scrollbar">
-                <div className="flex gap-6 px-4 sm:px-6 lg:px-8 w-max">
-                    {projects.map((project, index) => (
-                        <Link href={project.link} key={project.id}>
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 0.5, delay: index * 0.1 }}
-                                className="group relative w-64 h-80 rounded-xl border border-white/10 bg-black/40 backdrop-blur-sm transition-all duration-300 hover:border-red-500/50 hover:shadow-[0_0_20px_-10px_rgba(230,0,35,0.3)] overflow-hidden transform hover:scale-105"
-                            >
-                                {/* Red Status Line */}
-                                <div className="absolute top-0 left-0 w-full h-1 bg-red-600 shadow-[0_0_10px_rgba(220,38,38,0.5)] group-hover:shadow-[0_0_20px_rgba(220,38,38,0.8)] transition-all duration-300" />
+                {/* Stats Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {stats.map((stat, index) => (
+                        <motion.div
+                            key={index}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: index * 0.1 }}
+                            className="relative p-8 rounded-3xl bg-slate-900/50 border border-white/5 overflow-hidden group hover:border-white/10 transition-colors h-full"
+                        >
+                            <div className={`absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity bg-gradient-to-br ${stat.color} bg-clip-text text-transparent font-black text-6xl select-none`}>
+                                {index + 1}
+                            </div>
 
-                                <div className="p-6 h-full flex flex-col justify-between relative z-10">
-                                    {/* Top: Client Name (Watermark) */}
-                                    <div>
-                                        <h3 className="text-4xl font-black text-white/5 uppercase tracking-tighter absolute top-4 left-4 select-none pointer-events-none">
-                                            {project.client}
-                                        </h3>
-                                        <div className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2 relative z-10">
-                                            {project.client}
-                                        </div>
-                                    </div>
-
-                                    {/* Middle: Metric */}
-                                    <div className="my-auto">
-                                        <div className="text-4xl font-bold text-white mb-1">
-                                            {project.metric}
-                                        </div>
-                                        <div className="text-sm text-gray-400 font-medium">
-                                            {project.metricLabel}
-                                        </div>
-                                    </div>
-
-                                    {/* Bottom: Title + Button */}
-                                    <div className="mt-auto pt-4 border-t border-white/10 flex items-center justify-between">
-                                        <span className="text-sm font-bold text-gray-300 group-hover:text-white transition-colors">
-                                            {project.title}
-                                        </span>
-                                        <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-iqon-red transition-colors duration-300">
-                                            <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-white transition-colors" />
-                                        </div>
-                                    </div>
+                            <div className="relative z-10">
+                                <div className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-2">
+                                    {stat.label}
                                 </div>
-                            </motion.div>
-                        </Link>
+                                <div className={`text-4xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent mb-1`}>
+                                    {stat.value}
+                                </div>
+                                <div className="text-white font-bold text-lg mb-4">
+                                    {stat.suffix}
+                                </div>
+                                <p className="text-gray-400 text-sm leading-relaxed">
+                                    {stat.desc}
+                                </p>
+                            </div>
+                        </motion.div>
                     ))}
                 </div>
             </div>

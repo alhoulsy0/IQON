@@ -40,7 +40,7 @@ export default function CyberPage() {
                         animate={{ opacity: 1, y: 0 }}
                         className="text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight"
                     >
-                        Adversarial Simulation <br />
+                        Cybersecurity <br />
                         <span className="text-iqon-red">& Red Teaming</span>
                     </motion.h1>
                     <motion.p
@@ -63,8 +63,8 @@ export default function CyberPage() {
                                 key={tab.id}
                                 onClick={() => setActiveTab(tab.id)}
                                 className={`relative px-6 py-3 rounded-full text-sm font-bold uppercase tracking-wider transition-all duration-300 ${activeTab === tab.id
-                                        ? "text-white bg-white/10 border border-iqon-red/50"
-                                        : "text-gray-500 hover:text-white hover:bg-white/5 border border-transparent"
+                                    ? "text-white bg-white/10 border border-iqon-red/50"
+                                    : "text-gray-500 hover:text-white hover:bg-white/5 border border-transparent"
                                     }`}
                             >
                                 <span className="flex items-center gap-2">

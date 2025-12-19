@@ -4,12 +4,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 
 const locations = [
-    {
-        id: "toronto",
-        city: "Canada",
-        coordinates: { x: 28, y: 35 },
-        status: "active"
-    },
+
     {
         id: "abudhabi",
         city: "UAE",

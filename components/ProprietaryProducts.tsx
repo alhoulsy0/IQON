@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Check } from "lucide-react";
 import Link from "next/link";
 
-const AuroraCard = () => {
+const FaheemCard = () => {
     return (
         <Link href="/products/aurora" className="block h-full">
             <motion.div
@@ -14,7 +14,7 @@ const AuroraCard = () => {
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
                 <div className="relative z-10">
-                    <h3 className="text-3xl font-bold text-white mb-2">The Aurora Platform</h3>
+                    <h3 className="text-3xl font-bold text-white mb-2">Faheem<span className="text-sm align-top">TM</span></h3>
                     <p className="text-gray-400 mb-8">AI Test Generation</p>
 
                     {/* Code Lines Animation */}
@@ -43,14 +43,14 @@ const AuroraCard = () => {
                 </div>
 
                 <div className="relative z-10 mt-8 flex items-center text-iqon-red font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    Explore Platform <ArrowRight className="w-4 h-4 ml-2" />
+                    Explore Platform <span className="text-xs ml-1 opacity-70">(Beta)</span> <ArrowRight className="w-4 h-4 ml-2" />
                 </div>
             </motion.div>
         </Link>
     );
 };
 
-const RiskLensCard = () => {
+const AssessmentToolCard = () => {
     return (
         <Link href="/products/risk-lens" className="block h-full">
             <motion.div
@@ -60,7 +60,7 @@ const RiskLensCard = () => {
                 <div className="absolute inset-0 bg-gradient-to-br from-green-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
                 <div className="relative z-10">
-                    <h3 className="text-3xl font-bold text-white mb-2">Risk-Lens</h3>
+                    <h3 className="text-3xl font-bold text-white mb-2">Qertex Assessment</h3>
                     <p className="text-gray-400 mb-8">Scanning for Risk</p>
 
                     {/* Radar Scan Animation */}
@@ -89,7 +89,7 @@ const RiskLensCard = () => {
                 </div>
 
                 <div className="relative z-10 mt-8 flex items-center text-iqon-red font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    Explore Engine <ArrowRight className="w-4 h-4 ml-2" />
+                    Explore Engine <span className="text-xs ml-1 opacity-70">(Beta)</span> <ArrowRight className="w-4 h-4 ml-2" />
                 </div>
             </motion.div>
         </Link>
@@ -113,8 +113,8 @@ const ProprietaryProducts = () => {
                 </motion.div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-                    <AuroraCard />
-                    <RiskLensCard />
+                    <FaheemCard />
+                    <AssessmentToolCard />
                 </div>
             </div>
         </section>

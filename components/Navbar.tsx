@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X, Globe, ChevronDown, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { QertexLogo } from "./QertexLogo";
 
 const Navbar = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -27,9 +28,12 @@ const Navbar = () => {
                 <div className="flex items-center justify-between">
                     {/* Logo */}
                     <Link href="/" className="flex items-center gap-2 group">
-                        <span className="text-2xl font-bold tracking-widest text-white">
-                            IQ<span className="text-iqon-red animate-pulse">ON</span>
-                        </span>
+                        <div className="flex items-center gap-2">
+                            <QertexLogo className="w-8 h-8 md:w-10 md:h-10" />
+                            <span className="text-2xl font-bold tracking-widest text-white uppercase">
+                                Qer<span className="text-iqon-red animate-pulse">tex</span>
+                            </span>
+                        </div>
                     </Link>
 
                     {/* Desktop Navigation */}
@@ -41,17 +45,20 @@ const Navbar = () => {
                             {/* Dropdown */}
                             <div className="absolute top-full left-0 mt-2 w-48 bg-slate-900 border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0">
                                 <div className="p-2">
+                                    <Link href="/services/assurance" className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg">
+                                        Software Quality
+                                    </Link>
+                                    <Link href="/services/ai" className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg">
+                                        AI Technology
+                                    </Link>
                                     <Link href="/services/cyber" className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg">
                                         Cybersecurity
                                     </Link>
-                                    <Link href="/services/ai" className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg">
-                                        AI Assurance
-                                    </Link>
-                                    <Link href="/services/assurance" className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg">
-                                        Quality Assurance
-                                    </Link>
                                     <Link href="/services/academy" className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg">
-                                        IQON Academy
+                                        Qertex Academy
+                                    </Link>
+                                    <Link href="/services/staffing" className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg">
+                                        Staffing
                                     </Link>
                                 </div>
                             </div>
@@ -79,7 +86,6 @@ const Navbar = () => {
                             <div className="absolute top-full right-0 mt-2 w-40 bg-slate-900 border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0">
                                 <div className="p-1">
                                     {[
-                                        "Canada (EN)",
                                         "UAE (AR)",
                                         "Bahrain (AR)",
                                         "Jordan (AR)"
@@ -96,7 +102,7 @@ const Navbar = () => {
                             </div>
                         </div>
                         <a
-                            href="mailto:alhoulsy@gmail.com"
+                            href="mailto:info@qertex.com"
                             className="px-6 py-2.5 bg-white/10 hover:bg-iqon-red text-white text-sm font-bold rounded-full transition-all duration-300 border border-white/5 hover:border-iqon-red/50"
                         >
                             Contact Us

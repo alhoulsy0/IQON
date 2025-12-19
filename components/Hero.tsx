@@ -16,11 +16,17 @@ const ParticleNetwork = () => {
     }, []);
 
     // Generate static points for the network
-    const points = Array.from({ length: 20 }).map((_, i) => ({
-        id: i,
-        x: Math.random() * 100,
-        y: Math.random() * 100,
-    }));
+    const [points, setPoints] = useState<{ id: number; x: number; y: number }[]>([]);
+
+    useEffect(() => {
+        setPoints(
+            Array.from({ length: 20 }).map((_, i) => ({
+                id: i,
+                x: Math.random() * 100,
+                y: Math.random() * 100,
+            }))
+        );
+    }, []);
 
     return (
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -110,9 +116,7 @@ const Hero = () => {
                     <p className="text-lg md:text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed font-light">
                         <span className="text-white font-bold drop-shadow-sm">Deep-Tech Architecture. Beyond Consulting.</span>
                         <br />
-                        Re-engineering the enterprise to <span className="text-white font-bold drop-shadow-sm">&apos;AI-Enable&apos;</span> every operational layer.
-                        <br />
-                        From <span className="text-white font-bold drop-shadow-sm">Automating Quality</span> and <span className="text-white font-bold drop-shadow-sm">Fortifying Infrastructure</span> to deploying <span className="text-white font-bold drop-shadow-sm">Autonomous Agents</span> that run the business.
+                        Engineering the enterprise with <span className="text-white font-bold drop-shadow-sm">Software Quality</span>, <span className="text-white font-bold drop-shadow-sm">AI Technology</span>, <span className="text-white font-bold drop-shadow-sm">Cybersecurity</span>, and <span className="text-white font-bold drop-shadow-sm">Strategic Staffing</span>.
                     </p>
                 </motion.div>
 
@@ -125,7 +129,7 @@ const Hero = () => {
                     <Link href="#services" className="w-full sm:w-auto px-8 py-4 bg-iqon-red hover:bg-red-700 text-white font-bold rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(230,0,35,0.3)] hover:shadow-[0_0_30px_rgba(230,0,35,0.5)] transform hover:-translate-y-1">
                         Explore Our Services
                     </Link>
-                    <a href="mailto:alhoulsy@gmail.com" className="w-full sm:w-auto px-8 py-4 border border-iqon-red/50 text-white font-bold rounded-full hover:bg-iqon-red/10 transition-all duration-300 backdrop-blur-sm">
+                    <a href="mailto:info@qertex.com" className="w-full sm:w-auto px-8 py-4 border border-iqon-red/50 text-white font-bold rounded-full hover:bg-iqon-red/10 transition-all duration-300 backdrop-blur-sm">
                         Contact Us
                     </a>
                 </motion.div>

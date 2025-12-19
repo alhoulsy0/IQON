@@ -11,7 +11,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "IQON GLOBAL | Iconic AI Consultancy",
+  title: "Qertex | Iconic AI Consultancy",
   description: "Premier Digital Assurance, Cyber Resilience, and AI consultancy.",
 };
 

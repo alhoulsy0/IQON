@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Linkedin } from "lucide-react";
+import { QertexLogo } from "./QertexLogo";
 
 const Footer = () => {
     return (
@@ -11,9 +12,12 @@ const Footer = () => {
                     {/* Column 1: Brand */}
                     <div className="space-y-6">
                         <Link href="/" className="flex items-center gap-2 group">
-                            <span className="text-2xl font-bold tracking-widest text-white">
-                                IQ<span className="text-iqon-red animate-pulse">ON</span>
-                            </span>
+                            <div className="flex items-center gap-3">
+                                <QertexLogo className="w-8 h-8 md:w-10 md:h-10" />
+                                <span className="text-xl font-bold tracking-widest text-white uppercase">
+                                    Qer<span className="text-iqon-red animate-pulse">tex</span>
+                                </span>
+                            </div>
                         </Link>
                         <p className="text-gray-500 text-sm leading-relaxed">
                             Intelligence. Switched On.
@@ -26,7 +30,7 @@ const Footer = () => {
                             Offshore & Onshore
                         </h4>
                         <ul className="space-y-3 text-sm text-gray-400">
-                            <li>Canada (HQ)</li>
+
                             <li>UAE (AI Hub)</li>
                             <li>Bahrain (Regional)</li>
                             <li>Jordan (Delivery)</li>
@@ -39,10 +43,11 @@ const Footer = () => {
                             Expertise
                         </h4>
                         <ul className="space-y-3">
-                            <li><Link href="/services/cyber" className="text-sm text-gray-400 hover:text-white transition-colors">Cyber Defense</Link></li>
-                            <li><Link href="/services/ai" className="text-sm text-gray-400 hover:text-white transition-colors">AI Engineering</Link></li>
-                            <li><Link href="/services/assurance" className="text-sm text-gray-400 hover:text-white transition-colors">Quality Assurance</Link></li>
-                            <li><Link href="/services/academy" className="text-sm text-gray-400 hover:text-white transition-colors">Academy</Link></li>
+                            <li><Link href="/services/assurance" className="text-sm text-gray-400 hover:text-white transition-colors">Software Quality</Link></li>
+                            <li><Link href="/services/ai" className="text-sm text-gray-400 hover:text-white transition-colors">AI Technology</Link></li>
+                            <li><Link href="/services/cyber" className="text-sm text-gray-400 hover:text-white transition-colors">Cybersecurity</Link></li>
+                            <li><Link href="/services/academy" className="text-sm text-gray-400 hover:text-white transition-colors">Qertex Academy</Link></li>
+                            <li><Link href="/services/staffing" className="text-sm text-gray-400 hover:text-white transition-colors">Staffing</Link></li>
                         </ul>
                     </div>
 
@@ -56,7 +61,7 @@ const Footer = () => {
                             <li><Link href="/terms" className="text-sm text-gray-400 hover:text-white transition-colors">Terms of Service</Link></li>
                         </ul>
                         <div className="pt-4">
-                            <a href="#" className="text-gray-400 hover:text-iqon-red transition-colors inline-block">
+                            <a href="https://www.linkedin.com/company/qertex" className="text-gray-400 hover:text-iqon-red transition-colors inline-block">
                                 <Linkedin className="w-5 h-5" />
                             </a>
                         </div>
@@ -66,7 +71,7 @@ const Footer = () => {
                 {/* Copyright */}
                 <div className="pt-8 border-t border-white/5 text-center md:text-left">
                     <p className="text-xs text-gray-600">
-                        &copy; 2025 IQON.
+                        &copy; 2025 Qertex.
                     </p>
                 </div>
             </div>

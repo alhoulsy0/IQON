@@ -21,13 +21,13 @@ const FoundersVision = () => {
                     {/* Body Text - Serif for Editorial Look */}
                     <div className="space-y-6 text-lg md:text-xl text-gray-300 font-serif leading-relaxed">
                         <p>
-                            We didn’t build IQON to be just another consultancy. We built it because we saw a fundamental flaw in how the industry operates.
+                            We didn’t build Qertex to be just another consultancy. We built it because we saw a fundamental flaw in how the industry operates.
                         </p>
                         <p>
                             For too long, businesses have relied on reactive security and manual quality assurance. The traditional consulting model—selling hours and bodies—is obsolete.
                         </p>
                         <p>
-                            At IQON, we are field experts with deep roots in <strong className="text-white">Cybersecurity</strong>, <strong className="text-white">Artificial Intelligence</strong>, and <strong className="text-white">Global Standards</strong>. Our philosophy is simple: <strong className="text-white italic">If a process is manual, it is a risk.</strong>
+                            At Qertex, we are field experts with deep roots in <strong className="text-white">Cybersecurity</strong>, <strong className="text-white">Artificial Intelligence</strong>, and <strong className="text-white">Global Standards</strong>. Our philosophy is simple: <strong className="text-white italic">If a process is manual, it is a risk.</strong>
                         </p>
                         <p>
                             Our mission is to &apos;AI-enable&apos; every layer of your operation. We don&apos;t just secure your network; we deploy autonomous agents to hunt threats. We are here to switch on the intelligence dormant in your systems.
@@ -38,7 +38,7 @@ const FoundersVision = () => {
                     <div className="mt-12 flex items-end justify-between">
                         <div>
                             <p className="text-iqon-red font-bold text-lg font-sans tracking-widest uppercase">
-                                — The Founder, IQON
+                                — The Founder, Qertex
                             </p>
                         </div>
 

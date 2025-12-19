@@ -25,7 +25,7 @@ const AboutPage = () => {
                         transition={{ delay: 0.2 }}
                         className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed"
                     >
-                        IQON is the premier Digital Assurance & Cognitive Defense firm, empowering nations with sovereign AI and secure infrastructure.
+                        Qertex is the premier Digital Assurance & Cognitive Defense firm, empowering nations with sovereign AI and secure infrastructure.
                     </motion.p>
                 </div>
                 {/* Background Elements */}
@@ -92,7 +92,6 @@ const AboutPage = () => {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                     {[
-                        { city: "Canada", country: "HQ", desc: "R&D, Engineering" },
                         { city: "UAE", country: "Regional Hub", desc: "Strategic Expansion" },
                     ].map((loc, index) => (
                         <motion.div
@@ -118,10 +117,10 @@ const AboutPage = () => {
                 <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
                     <h2 className="text-4xl font-bold text-white mb-6">Join Our Mission</h2>
                     <p className="text-white/90 text-xl mb-8">
-                        Whether you are a government entity seeking sovereignty or an engineer looking to make an impact, IQON is your partner.
+                        Whether you are a government entity seeking sovereignty or an engineer looking to make an impact, Qertex is your partner.
                     </p>
                     <a
-                        href="mailto:alhoulsy@gmail.com"
+                        href="mailto:info@qertex.com"
                         className="inline-flex items-center px-8 py-4 bg-white text-iqon-red font-bold rounded-full hover:bg-gray-100 transition-colors duration-300"
                     >
                         Contact Us <ArrowRight className="w-5 h-5 ml-2" />
