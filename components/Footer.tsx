@@ -6,9 +6,9 @@ import { QertexLogo } from "./QertexLogo";
 
 const Footer = () => {
     return (
-        <footer className="bg-slate-950 border-t border-white/5 pt-16 pb-8">
+        <footer className="bg-slate-950 border-t border-white/5 pt-16 pb-8 relative z-50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16 items-start">
+                <div className="grid grid-cols-1 md:grid-cols-5 gap-12 mb-16 items-start">
                     {/* Column 1: Brand */}
                     <div className="space-y-6">
                         <Link href="/" className="flex items-center gap-2 group">
@@ -47,11 +47,22 @@ const Footer = () => {
                             <li><Link href="/services/ai" className="text-sm text-gray-400 hover:text-white transition-colors">AI Technology</Link></li>
                             <li><Link href="/services/cyber" className="text-sm text-gray-400 hover:text-white transition-colors">Cybersecurity</Link></li>
                             <li><Link href="/services/academy" className="text-sm text-gray-400 hover:text-white transition-colors">Qertex Academy</Link></li>
-                            <li><Link href="/services/staffing" className="text-sm text-gray-400 hover:text-white transition-colors">Staffing</Link></li>
+                            <li><Link href="/services/staffing" className="text-sm text-gray-400 hover:text-white transition-colors">Technical Staffing</Link></li>
                         </ul>
                     </div>
 
-                    {/* Column 4: Legal & Social */}
+                    {/* Column 4: Products */}
+                    <div className="space-y-6">
+                        <h4 className="text-xs font-bold text-gray-500 uppercase tracking-widest">
+                            Products
+                        </h4>
+                        <ul className="space-y-3">
+                            <li><Link href="/products/aurora" className="text-sm text-gray-400 hover:text-white transition-colors">AURORA™ Platform</Link></li>
+                            <li><Link href="/products/risk-lens" className="text-sm text-gray-400 hover:text-white transition-colors">Qertex Assessment™</Link></li>
+                        </ul>
+                    </div>
+
+                    {/* Column 5: Legal & Social */}
                     <div className="space-y-6">
                         <h4 className="text-xs font-bold text-gray-500 uppercase tracking-widest">
                             Legal

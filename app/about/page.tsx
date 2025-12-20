@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Globe, Shield, Zap, Users, ArrowRight } from "lucide-react";
+import { Globe, Shield, Zap, Users, ArrowRight, MapPin } from "lucide-react";
 import Link from "next/link";
 
 import FoundersVision from "@/components/FoundersVision";
@@ -90,9 +90,11 @@ const AboutPage = () => {
                     <h2 className="text-3xl font-bold text-white mb-4">Global Footprint</h2>
                     <div className="w-24 h-1 bg-iqon-red mx-auto rounded-full" />
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
                     {[
-                        { city: "UAE", country: "Regional Hub", desc: "Strategic Expansion" },
+                        { city: "Dubai", country: "UAE", desc: "AI Hub", icon: MapPin },
+                        { city: "Manama", country: "Bahrain", desc: "Regional Hub", icon: Globe },
+                        { city: "Amman", country: "Jordan", desc: "Delivery Center", icon: Globe },
                     ].map((loc, index) => (
                         <motion.div
                             key={index}
@@ -119,12 +121,12 @@ const AboutPage = () => {
                     <p className="text-white/90 text-xl mb-8">
                         Whether you are a government entity seeking sovereignty or an engineer looking to make an impact, Qertex is your partner.
                     </p>
-                    <a
-                        href="mailto:info@qertex.com"
+                    <Link
+                        href="/contact"
                         className="inline-flex items-center px-8 py-4 bg-white text-iqon-red font-bold rounded-full hover:bg-gray-100 transition-colors duration-300"
                     >
                         Contact Us <ArrowRight className="w-5 h-5 ml-2" />
-                    </a>
+                    </Link>
                 </div>
             </section>
         </main>

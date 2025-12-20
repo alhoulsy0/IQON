@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight, Check, BrainCircuit } from "lucide-react";
 import Link from "next/link";
 
 const FaheemCard = () => {
@@ -9,13 +9,13 @@ const FaheemCard = () => {
         <Link href="/products/aurora" className="block h-full">
             <motion.div
                 whileHover={{ y: -10 }}
-                className="group relative h-full p-8 rounded-xl border border-white/10 bg-black/40 backdrop-blur-sm transition-all duration-300 hover:border-red-500/50 hover:shadow-[0_0_20px_-10px_rgba(230,0,35,0.3)] overflow-hidden flex flex-col justify-between"
+                className="group relative h-full p-8 rounded-xl border border-white/10 bg-black/40 backdrop-blur-sm transition-all duration-300 hover:border-purple-500/50 hover:shadow-[0_0_20px_-10px_rgba(168,85,247,0.3)] overflow-hidden flex flex-col justify-between"
             >
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
                 <div className="relative z-10">
-                    <h3 className="text-3xl font-bold text-white mb-2">Faheem<span className="text-sm align-top">TM</span></h3>
-                    <p className="text-gray-400 mb-8">AI Test Generation</p>
+                    <h3 className="text-3xl font-bold text-white mb-2">AURORA<span className="text-sm align-top">TM</span></h3>
+                    <p className="text-gray-400 mb-8">The Faheem AI Engine</p>
 
                     {/* Code Lines Animation */}
                     <div className="bg-slate-950/50 rounded-xl p-4 font-mono text-xs border border-white/5 h-32 relative overflow-hidden">
@@ -42,7 +42,7 @@ const FaheemCard = () => {
                     </div>
                 </div>
 
-                <div className="relative z-10 mt-8 flex items-center text-iqon-red font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="relative z-10 mt-8 flex items-center text-purple-400 font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     Explore Platform <span className="text-xs ml-1 opacity-70">(Beta)</span> <ArrowRight className="w-4 h-4 ml-2" />
                 </div>
             </motion.div>
@@ -55,41 +55,75 @@ const AssessmentToolCard = () => {
         <Link href="/products/risk-lens" className="block h-full">
             <motion.div
                 whileHover={{ y: -10 }}
-                className="group relative h-full p-8 rounded-xl border border-white/10 bg-black/40 backdrop-blur-sm transition-all duration-300 hover:border-red-500/50 hover:shadow-[0_0_20px_-10px_rgba(230,0,35,0.3)] overflow-hidden flex flex-col justify-between"
+                className="group relative h-full p-8 rounded-xl border border-white/10 bg-black/40 backdrop-blur-sm transition-all duration-300 hover:border-blue-500/50 hover:shadow-[0_0_20px_-10px_rgba(59,130,246,0.3)] overflow-hidden flex flex-col justify-between"
             >
-                <div className="absolute inset-0 bg-gradient-to-br from-green-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
                 <div className="relative z-10">
-                    <h3 className="text-3xl font-bold text-white mb-2">Qertex Assessment</h3>
-                    <p className="text-gray-400 mb-8">Scanning for Risk</p>
+                    <h3 className="text-3xl font-bold text-white mb-2">Qertex Assessment™</h3>
+                    <p className="text-gray-400 mb-8">AI Compliance Consultant</p>
 
-                    {/* Radar Scan Animation */}
-                    <div className="relative w-32 h-32 mx-auto rounded-full border border-white/10 bg-slate-950/50 flex items-center justify-center overflow-hidden">
-                        {/* Grid lines */}
-                        <div className="absolute inset-0 border border-white/5 rounded-full scale-75" />
-                        <div className="absolute inset-0 border border-white/5 rounded-full scale-50" />
-                        <div className="absolute w-full h-[1px] bg-white/5 top-1/2 -translate-y-1/2" />
-                        <div className="absolute h-full w-[1px] bg-white/5 left-1/2 -translate-x-1/2" />
+                    {/* Animation: Standards -> AI -> Strategic Plan */}
+                    <div className="bg-slate-950/50 rounded-xl p-4 relative overflow-hidden h-40 flex items-center justify-center border border-white/5">
+                        {/* Grid Background */}
+                        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-20" />
 
-                        {/* Scanning Line */}
+                        {/* Phase 1: Standards Ingestion (Orbiting Icons) */}
                         <motion.div
-                            animate={{ rotate: 360 }}
-                            transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                            className="absolute inset-0 w-full h-full bg-gradient-to-tr from-transparent via-transparent to-green-500/50 rounded-full"
-                            style={{ clipPath: "polygon(50% 50%, 100% 0, 100% 50%)" }}
-                        />
+                            animate={{ opacity: [1, 0, 0, 1], scale: [1, 0.5, 0.5, 1] }}
+                            transition={{ duration: 6, repeat: Infinity, times: [0, 0.3, 0.8, 1] }}
+                            className="absolute inset-0 flex items-center justify-center"
+                        >
+                            {[
+                                { label: "ISO", x: -60, y: -20 },
+                                { label: "TMMi", x: 60, y: -20 },
+                                { label: "Qiyas", x: 0, y: 40 }
+                            ].map((std, i) => (
+                                <motion.div
+                                    key={i}
+                                    animate={{ x: [std.x, 0, 0, std.x], y: [std.y, 0, 0, std.y], opacity: [1, 0, 0, 1] }}
+                                    transition={{ duration: 6, repeat: Infinity, times: [0, 0.3, 0.8, 1] }}
+                                    className="absolute bg-slate-800 border border-white/10 px-2 py-1 rounded text-[10px] font-bold text-gray-300 shadow-lg z-20"
+                                >
+                                    {std.label}
+                                </motion.div>
+                            ))}
+                        </motion.div>
 
-                        {/* Blip */}
+                        {/* Phase 2: AI Processing (Central Brain) */}
+                        <div className="relative z-10">
+                            <motion.div
+                                animate={{
+                                    scale: [0, 1.2, 0],
+                                    opacity: [0, 1, 0],
+                                    rotate: [0, 180, 360]
+                                }}
+                                transition={{ duration: 6, repeat: Infinity, times: [0.2, 0.5, 0.8] }}
+                                className="w-16 h-16 bg-blue-500/10 rounded-full flex items-center justify-center border border-blue-500/30"
+                            >
+                                <BrainCircuit className="w-8 h-8 text-blue-400" />
+                            </motion.div>
+                        </div>
+
+                        {/* Phase 3: Results & Plan (Document + Arrow) */}
                         <motion.div
-                            animate={{ opacity: [0, 1, 0] }}
-                            transition={{ duration: 1, repeat: Infinity, repeatDelay: 2 }}
-                            className="absolute top-1/3 right-1/3 w-2 h-2 bg-red-500 rounded-full shadow-[0_0_10px_rgba(239,68,68,0.8)]"
-                        />
+                            animate={{ opacity: [0, 0, 1, 0], y: [10, 10, 0, -10] }}
+                            transition={{ duration: 6, repeat: Infinity, times: [0.5, 0.6, 0.8, 1] }}
+                            className="absolute inset-0 flex items-center justify-center z-30"
+                        >
+                            <div className="flex flex-col items-center gap-2">
+                                <div className="bg-green-500/20 p-3 rounded-lg border border-green-500/50 backdrop-blur-md flex items-center gap-2 shadow-[0_0_20px_rgba(34,197,94,0.4)]">
+                                    <Check className="w-5 h-5 text-green-400" />
+                                    <span className="text-xs font-bold text-green-300">Plan Generated</span>
+                                </div>
+                            </div>
+                        </motion.div>
+
                     </div>
                 </div>
 
-                <div className="relative z-10 mt-8 flex items-center text-iqon-red font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    Explore Engine <span className="text-xs ml-1 opacity-70">(Beta)</span> <ArrowRight className="w-4 h-4 ml-2" />
+                <div className="relative z-10 mt-8 flex items-center text-blue-400 font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    Generate Plan <span className="text-xs ml-1 opacity-70">(AI)</span> <ArrowRight className="w-4 h-4 ml-2" />
                 </div>
             </motion.div>
         </Link>

@@ -129,9 +129,9 @@ const Hero = () => {
                     <Link href="#services" className="w-full sm:w-auto px-8 py-4 bg-iqon-red hover:bg-red-700 text-white font-bold rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(230,0,35,0.3)] hover:shadow-[0_0_30px_rgba(230,0,35,0.5)] transform hover:-translate-y-1">
                         Explore Our Services
                     </Link>
-                    <a href="mailto:info@qertex.com" className="w-full sm:w-auto px-8 py-4 border border-iqon-red/50 text-white font-bold rounded-full hover:bg-iqon-red/10 transition-all duration-300 backdrop-blur-sm">
+                    <Link href="/contact" className="w-full sm:w-auto px-8 py-4 border border-iqon-red/50 text-white font-bold rounded-full hover:bg-iqon-red/10 transition-all duration-300 backdrop-blur-sm">
                         Contact Us
-                    </a>
+                    </Link>
                 </motion.div>
 
             </div>

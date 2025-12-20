@@ -110,11 +110,10 @@ export default function AuroraPage() {
                         </div>
 
                         <Link
-                            href="https://aurora-platform.vercel.app/"
-                            target="_blank"
+                            href="/contact"
                             className="inline-flex items-center px-8 py-4 bg-iqon-red text-white font-bold rounded-lg hover:bg-red-700 transition-colors duration-300 shadow-[0_0_30px_rgba(230,0,35,0.3)] hover:shadow-[0_0_50px_rgba(230,0,35,0.5)]"
                         >
-                            Launch Aurora Dashboard <ArrowRight className="w-5 h-5 ml-2" />
+                            Request Access <ArrowRight className="w-5 h-5 ml-2" />
                         </Link>
                     </motion.div>
 

@@ -143,12 +143,12 @@ export default function AcademyServicesPage() {
                             </ul>
                         </div>
                         <div className="md:w-1/3 flex justify-center">
-                            <a
-                                href="mailto:info@qertex.com"
+                            <Link
+                                href="/contact"
                                 className="inline-flex items-center px-8 py-4 bg-white text-slate-900 font-bold rounded-full hover:bg-gray-100 transition-colors shadow-xl"
                             >
                                 Request Demo <ArrowRight className="w-5 h-5 ml-2" />
-                            </a>
+                            </Link>
                         </div>
                     </div>
                 </motion.div>

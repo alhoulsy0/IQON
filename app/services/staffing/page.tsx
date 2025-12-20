@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Users, Briefcase, Award, ArrowRight, UserCheck } from "lucide-react";
+import Link from "next/link";
 
 export default function StaffingServicesPage() {
     return (
@@ -61,12 +62,12 @@ export default function StaffingServicesPage() {
             {/* CTA */}
             <section className="max-w-4xl mx-auto px-4 text-center mt-24">
                 <h2 className="text-3xl font-bold text-white mb-8">Build Your Dream Team</h2>
-                <a
-                    href="mailto:info@qertex.com"
+                <Link
+                    href="/contact"
                     className="inline-flex items-center px-8 py-4 bg-iqon-red hover:bg-red-700 text-white font-bold rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(230,0,35,0.3)] hover:shadow-[0_0_30px_rgba(230,0,35,0.5)]"
                 >
                     Contact Staffing Team <ArrowRight className="w-5 h-5 ml-2" />
-                </a>
+                </Link>
             </section>
         </main>
     );

@@ -58,14 +58,27 @@ const Navbar = () => {
                                         Qertex Academy
                                     </Link>
                                     <Link href="/services/staffing" className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg">
-                                        Staffing
+                                        Technical Staffing
                                     </Link>
                                 </div>
                             </div>
                         </div>
-                        <Link href="/products/aurora" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">
-                            Products
-                        </Link>
+                        <div className="relative group">
+                            <button className="text-sm font-medium text-gray-300 hover:text-white flex items-center gap-1 transition-colors">
+                                Products <ChevronDown className="w-4 h-4" />
+                            </button>
+                            {/* Dropdown */}
+                            <div className="absolute top-full left-0 mt-2 w-56 bg-slate-900 border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0">
+                                <div className="p-2">
+                                    <Link href="/products/aurora" className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg">
+                                        AURORA™ Platform
+                                    </Link>
+                                    <Link href="/products/risk-lens" className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg">
+                                        Qertex Assessment™
+                                    </Link>
+                                </div>
+                            </div>
+                        </div>
                         <Link href="/projects" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">
                             Projects
                         </Link>
@@ -76,37 +89,12 @@ const Navbar = () => {
 
                     {/* Desktop Actions */}
                     <div className="hidden md:flex items-center gap-6">
-                        <div className="relative group">
-                            <button className="flex items-center gap-2 text-xs font-medium text-gray-400 hover:text-white cursor-pointer transition-colors">
-                                <Globe className="w-4 h-4" />
-                                <span>{activeRegion}</span>
-                                <ChevronDown className="w-3 h-3" />
-                            </button>
-                            {/* Region Dropdown */}
-                            <div className="absolute top-full right-0 mt-2 w-40 bg-slate-900 border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0">
-                                <div className="p-1">
-                                    {[
-                                        "UAE (AR)",
-                                        "Bahrain (AR)",
-                                        "Jordan (AR)"
-                                    ].map((region) => (
-                                        <button
-                                            key={region}
-                                            onClick={() => setActiveRegion(region)}
-                                            className={`block w-full text-left px-4 py-2 text-xs rounded-lg transition-colors ${activeRegion === region ? "bg-white/10 text-white" : "text-gray-400 hover:text-white hover:bg-white/5"}`}
-                                        >
-                                            {region}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                        <a
-                            href="mailto:info@qertex.com"
+                        <Link
+                            href="/contact"
                             className="px-6 py-2.5 bg-white/10 hover:bg-iqon-red text-white text-sm font-bold rounded-full transition-all duration-300 border border-white/5 hover:border-iqon-red/50"
                         >
                             Contact Us
-                        </a>
+                        </Link>
                     </div>
 
                     {/* Mobile Menu Button */}
@@ -129,25 +117,42 @@ const Navbar = () => {
                         className="md:hidden bg-slate-950 border-b border-white/10 overflow-hidden"
                     >
                         <div className="px-4 py-6 space-y-4">
-                            <Link href="/services/cyber" className="block text-lg font-medium text-gray-300 hover:text-white">
-                                Services
-                            </Link>
-                            <Link href="/products/aurora" className="block text-lg font-medium text-gray-300 hover:text-white">
-                                Products
-                            </Link>
-                            <Link href="/projects" className="block text-lg font-medium text-gray-300 hover:text-white">
-                                Projects
-                            </Link>
-                            <Link href="/about" className="block text-lg font-medium text-gray-300 hover:text-white">
-                                About
-                            </Link>
-                            <div className="pt-4 border-t border-white/10">
-                                <a
-                                    href="mailto:alhoulsy@gmail.com"
+                            <div className="space-y-2">
+                                <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">Services</span>
+                                <Link href="/services/staffing" className="block text-lg font-medium text-gray-300 hover:text-white">
+                                    Technical Staffing
+                                </Link>
+                                <Link href="/services/ai" className="block text-lg font-medium text-gray-300 hover:text-white">
+                                    AI & Cyber
+                                </Link>
+                            </div>
+
+                            <div className="space-y-2 pt-4 border-t border-white/5">
+                                <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">Products</span>
+                                <Link href="/products/aurora" className="block text-lg font-medium text-gray-300 hover:text-white">
+                                    AURORA™ Platform
+                                </Link>
+                                <Link href="/products/risk-lens" className="block text-lg font-medium text-gray-300 hover:text-white">
+                                    Qertex Assessment™
+                                </Link>
+                            </div>
+
+                            <div className="space-y-2 pt-4 border-t border-white/5">
+                                <Link href="/projects" className="block text-lg font-medium text-gray-300 hover:text-white">
+                                    Projects
+                                </Link>
+                                <Link href="/about" className="block text-lg font-medium text-gray-300 hover:text-white">
+                                    About
+                                </Link>
+                            </div>
+
+                            <div className="pt-6">
+                                <Link
+                                    href="/contact"
                                     className="flex items-center justify-center w-full px-6 py-3 bg-iqon-red text-white font-bold rounded-lg hover:bg-red-700 transition-colors"
                                 >
                                     Contact Us <ArrowRight className="w-4 h-4 ml-2" />
-                                </a>
+                                </Link>
                             </div>
                         </div>
                     </motion.div>

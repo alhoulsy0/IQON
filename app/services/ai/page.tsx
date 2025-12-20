@@ -113,12 +113,12 @@ export default function AIServicesPage() {
             {/* CTA */}
             <section className="max-w-4xl mx-auto px-4 text-center mt-32">
                 <h2 className="text-3xl font-bold text-white mb-8">Ready to Engineer Your Intelligence?</h2>
-                <a
-                    href="mailto:info@qertex.com"
+                <Link
+                    href="/contact"
                     className="inline-flex items-center px-8 py-4 bg-iqon-red hover:bg-red-700 text-white font-bold rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(230,0,35,0.3)] hover:shadow-[0_0_30px_rgba(230,0,35,0.5)]"
                 >
                     Start the Transformation <ArrowRight className="w-5 h-5 ml-2" />
-                </a>
+                </Link>
             </section>
         </main>
     );
