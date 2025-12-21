@@ -82,6 +82,9 @@ const Navbar = () => {
                         <Link href="/projects" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">
                             Projects
                         </Link>
+                        <Link href="/profile" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">
+                            Profile
+                        </Link>
                         <Link href="/about" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">
                             About
                         </Link>
@@ -140,6 +143,9 @@ const Navbar = () => {
                             <div className="space-y-2 pt-4 border-t border-white/5">
                                 <Link href="/projects" className="block text-lg font-medium text-gray-300 hover:text-white">
                                     Projects
+                                </Link>
+                                <Link href="/profile" className="block text-lg font-medium text-gray-300 hover:text-white">
+                                    Company Profile
                                 </Link>
                                 <Link href="/about" className="block text-lg font-medium text-gray-300 hover:text-white">
                                     About
