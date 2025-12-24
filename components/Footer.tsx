@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Linkedin } from "lucide-react";
-import { QertexLogo } from "./QertexLogo";
+import { Logo } from "@/components/Logo";
 
 const Footer = () => {
     return (
@@ -11,13 +11,8 @@ const Footer = () => {
                 <div className="grid grid-cols-1 md:grid-cols-5 gap-12 mb-16 items-start">
                     {/* Column 1: Brand */}
                     <div className="space-y-6">
-                        <Link href="/" className="flex items-center gap-2 group">
-                            <div className="flex items-center gap-3">
-                                <QertexLogo className="w-8 h-8 md:w-10 md:h-10" />
-                                <span className="text-xl font-bold tracking-widest text-white uppercase">
-                                    Qer<span className="text-iqon-red animate-pulse">tex</span>
-                                </span>
-                            </div>
+                        <Link href="/" className="inline-block">
+                            <Logo />
                         </Link>
                         <p className="text-gray-500 text-sm leading-relaxed">
                             Intelligence. Switched On.

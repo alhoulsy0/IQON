@@ -4,12 +4,13 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X, Globe, ChevronDown, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { QertexLogo } from "./QertexLogo";
+import { Logo } from "@/components/Logo";
+
 
 const Navbar = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
-    const [activeRegion, setActiveRegion] = useState("Global (EN)");
+    // Removed local logo state logic as it is now in <Logo />
 
     useEffect(() => {
         const handleScroll = () => {
@@ -26,14 +27,10 @@ const Navbar = () => {
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between">
-                    {/* Logo */}
-                    <Link href="/" className="flex items-center gap-2 group">
-                        <div className="flex items-center gap-2">
-                            <QertexLogo className="w-8 h-8 md:w-10 md:h-10" />
-                            <span className="text-2xl font-bold tracking-widest text-white uppercase">
-                                Qer<span className="text-iqon-red animate-pulse">tex</span>
-                            </span>
-                        </div>
+
+                    {/* --- KINETIC LOGO --- */}
+                    <Link href="/">
+                        <Logo />
                     </Link>
 
                     {/* Desktop Navigation */}

@@ -2,28 +2,70 @@
 
 import React, { useState, useRef } from "react";
 import Link from "next/link";
-import { ArrowLeft, Copy, Download, Check, RefreshCw, Image as ImageIcon } from "lucide-react";
-import { QertexLogo } from "@/components/QertexLogo";
+import { ArrowLeft, Copy, Download, Check, RefreshCw, Image as ImageIcon, Video } from "lucide-react";
+import { Logo } from "@/components/Logo";
 import { Sora } from "next/font/google";
 import { motion } from "framer-motion";
-import { toBlob } from "html-to-image";
+import { toBlob, toPng } from "html-to-image";
+const GIFEncoder = require('gif-encoder-2');
 
 const sora = Sora({ subsets: ["latin"], weight: ["400", "500", "600", "700"] });
 
 export default function SignaturePage() {
     const [copied, setCopied] = useState(false);
     const [copiedImage, setCopiedImage] = useState(false);
+    const [isGifRecording, setIsGifRecording] = useState(false);
     const signatureRef = useRef<HTMLDivElement>(null);
+    const logoContainerRef = useRef<HTMLDivElement>(null);
 
     // --- STATE FOR INPUTS ---
     const [formData, setFormData] = useState({
-        name: "", // Default empty to keep "current layout" if desired, or user can input
+        name: "",
         role: "Sales Director",
         company: "Qertex Global Intelligence",
         email: "info@qertex.com",
         phone: "",
         website: "www.qertex.com"
     });
+
+    const [logoVariant, setLogoVariant] = useState<"BRAND" | "AI" | "QA" | "SEC">("BRAND");
+
+    // --- DYNAMIC THEME (COLORS & FONTS) ---
+    const getThemeAssets = () => {
+        switch (logoVariant) {
+            case 'BRAND': return {
+                primary: '#8b5cf6',
+                accent: '#a78bfa',
+                fontFamily: "'Arial', 'Helvetica', sans-serif", // Clean, Corporate, Safe
+                fontLabel: "Clean Sans"
+            };
+            case 'AI': return {
+                primary: '#E60023',
+                accent: '#fca5a5',
+                fontFamily: "'Verdana', 'Geneva', sans-serif", // Wide, Modern, Readable
+                fontLabel: "Modern Wide"
+            };
+            case 'QA': return {
+                primary: '#2DD4BF',
+                accent: '#5eead4',
+                fontFamily: "'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', sans-serif", // Tech-forward, Humanist
+                fontLabel: "Tech Humanist"
+            };
+            case 'SEC': return {
+                primary: '#0EA5E9',
+                accent: '#7dd3fc',
+                fontFamily: "'Courier New', 'Courier', monospace", // Code, Terminal, Security context
+                fontLabel: "Monospace"
+            };
+            default: return {
+                primary: '#0052FF',
+                accent: '#10B981',
+                fontFamily: "'Arial', sans-serif",
+                fontLabel: "Standard"
+            };
+        }
+    };
+    const colors = getThemeAssets();
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -33,60 +75,66 @@ export default function SignaturePage() {
     // --- HTML GENERATION FOR CLIPBOARD/DOWNLOAD ---
     const getSignatureHTML = () => {
         const { name, role, company, email, phone, website } = formData;
-
         const mainTitle = name ? name : role;
+        const theme = getThemeAssets();
 
-        // Contact Line construction
         const contactParts = [];
-        if (phone) contactParts.push(`<a href="tel:${phone}" style="color: #475569; text-decoration: none;">${phone}</a>`);
-        if (email) contactParts.push(`<a href="mailto:${email}" style="color: #475569; text-decoration: none;">${email}</a>`);
-        if (website) contactParts.push(`<a href="https://${website.replace(/^https?:\/\//, '')}" style="color: #475569; text-decoration: none;">${website}</a>`);
+        // Outlook loves standard phone links, but sometimes strips styles. We inline everything carefully.
+        if (phone) contactParts.push(`<a href="tel:${phone}" style="color: #64748b; text-decoration: none; font-family: ${theme.fontFamily};">${phone}</a>`);
+        if (email) contactParts.push(`<a href="mailto:${email}" style="color: #64748b; text-decoration: none; font-family: ${theme.fontFamily};">${email}</a>`);
+        if (website) contactParts.push(`<a href="https://${website.replace(/^https?:\/\//, '')}" style="color: #64748b; text-decoration: none; font-family: ${theme.fontFamily};">${website}</a>`);
 
-        const contactLine = contactParts.join('&nbsp;|&nbsp;');
+        // Outlook Separator: Standard pipe with spacing
+        const contactLine = contactParts.join('&nbsp;<span style="color: #cbd5e1;">|</span>&nbsp;');
+
+        // GIF URL: MUST be a publicly hosted URL for Outlook to show animation.
+        // Local blobs or Data URIs often fail in Outlook Desktop.
+        const logoUrl = `https://qertex-assets.vercel.app/logos/${logoVariant.toLowerCase()}.gif`;
 
         return `
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Use MSO conditional for Outlook specific font fixing if needed, but standard stacks are safer -->
 </head>
-<body style="font-family: 'Arial', sans-serif;">
-<table cellpadding="0" cellspacing="0" border="0" style="font-family: 'Arial', sans-serif; font-size: 14px; line-height: 1.4; color: #020617;">
+<body style="font-family: ${theme.fontFamily}; margin: 0; padding: 0;">
+<table cellpadding="0" cellspacing="0" border="0" style="font-family: ${theme.fontFamily}; font-size: 14px; line-height: 1.4; color: #0f172a; mso-line-height-rule: exactly;">
   <tr>
-    <!-- LEFT COLUMN: LOGO & SLOGAN -->
-    <td valign="top" style="padding-right: 20px; text-align: center;">
-      <div style="width: 48px; height: 48px; background-color: #020617; border-radius: 4px; margin: 0 auto; text-align: center; line-height: 48px;">
-        <span style="color: white; font-weight: bold; font-size: 24px;">Q</span>
-      </div>
-      <div style="margin-top: 8px; font-size: 10px; font-weight: 600; color: #64748b; font-family: 'Courier New', monospace; letter-spacing: -0.5px; white-space: nowrap;">
-        Intelligence.<br/>Switched On.
-      </div>
+    <!-- LEFT COLUMN: FULL LOGO GIF -->
+    <!-- Outlook Motion Fix: Ensure img is block, has dimensions, and uses valid hosted HTTPS URL -->
+    <td valign="middle" style="padding-right: 24px;">
+       <div style="background-color: #020617; padding: 12px; border-radius: 12px; display: inline-block; mso-element: para-border-div;">
+        <a href="https://www.qertex.com" style="text-decoration: none; border: 0;">
+            <img src="${logoUrl}" alt="Qertex" width="180" height="54" border="0" style="display: block; border: 0; width: 180px; height: 54px; max-width: 180px;" />
+        </a>
+       </div>
     </td>
     
     <!-- DIVIDER -->
-    <td valign="top" style="border-right: 2px solid #0052FF; width: 0px; padding: 0;"></td>
-    <td width="20"></td>
+    <td valign="top" style="border-right: 2px solid ${theme.primary}; width: 0px; padding: 0; font-size: 1px; line-height: 1px;">&nbsp;</td>
+    <td width="32" style="width: 32px; font-size: 1px; line-height: 1px;">&nbsp;</td>
     
     <!-- RIGHT COLUMN -->
-    <td valign="top">
-      <div style="font-size: 18px; font-weight: 700; color: #0052FF; margin-bottom: 4px; display: flex; align-items: center;">
+    <td valign="top" style="font-family: ${theme.fontFamily};">
+      <div style="font-size: 18px; font-weight: 700; color: ${theme.primary}; margin-bottom: 6px; display: flex; align-items: center; font-family: ${theme.fontFamily};">
         ${mainTitle}
-        <span style="display: inline-block; width: 8px; height: 8px; background-color: #10B981; border-radius: 50%; margin-left: 8px;"></span>
       </div>
       
-      ${name ? `<div style="font-size: 14px; font-weight: 600; color: #020617; margin-bottom: 2px;">${role}</div>` : ''}
+      ${name ? `<div style="font-size: 14px; font-weight: 600; color: #334155; margin-bottom: 4px; letter-spacing: -0.01em; font-family: ${theme.fontFamily};">${role}</div>` : ''}
       
-      <div style="font-size: 14px; font-weight: ${name ? '400' : '600'}; color: #020617; margin-bottom: 8px;">
+      <div style="font-size: 14px; font-weight: 500; color: #64748b; margin-bottom: 12px; font-family: ${theme.fontFamily};">
         ${company}
       </div>
       
-      <div style="font-size: 13px; color: #475569; margin-bottom: 12px;">
+      <div style="font-size: 12px; color: #64748b; margin-bottom: 16px; line-height: 1.6; font-family: ${theme.fontFamily};">
         ${contactLine}
       </div>
       
       <!-- FOOTER -->
-      <div style="border-top: 1px solid #E2E8F0; padding-top: 8px; font-size: 11px; color: #94A3B8; letter-spacing: 0.05em;">
-        <span style="font-weight: 600;">UAE | JORDAN | BAHRAIN</span>
+      <div style="border-top: 1px solid #e2e8f0; padding-top: 12px; font-size: 10px; font-weight: 600; color: #94a3b8; letter-spacing: 0.05em; text-transform: uppercase; font-family: ${theme.fontFamily};">
+        UAE <span style="color: ${theme.primary}">&bull;</span> JORDAN <span style="color: ${theme.primary}">&bull;</span> BAHRAIN
       </div>
     </td>
   </tr>
@@ -97,43 +145,105 @@ export default function SignaturePage() {
     };
 
     const handleCopy = async () => {
-        if (!signatureRef.current) return;
-
+        const html = getSignatureHTML();
         try {
             const clipboardItem = new ClipboardItem({
-                "text/html": new Blob([signatureRef.current.innerHTML], { type: "text/html" }),
-                "text/plain": new Blob([signatureRef.current.innerText], { type: "text/plain" }),
+                "text/html": new Blob([html], { type: "text/html" }),
+                "text/plain": new Blob([signatureRef.current?.innerText || ""], { type: "text/plain" }),
             });
             await navigator.clipboard.write([clipboardItem]);
             setCopied(true);
             setTimeout(() => setCopied(false), 2000);
         } catch (err) {
             console.error("Failed to copy", err);
-            navigator.clipboard.writeText(signatureRef.current.innerText);
         }
     };
 
-    const handleCopyImage = async () => {
+    const handleDownloadGif = async () => {
         if (!signatureRef.current) return;
+        setIsGifRecording(true);
 
         try {
-            const blob = await toBlob(signatureRef.current, {
-                backgroundColor: '#ffffff',
-                cacheBust: true,
-                pixelRatio: 2 // High res
-            });
+            // Setup GIF Encoder
+            const width = signatureRef.current.offsetWidth * 2;
+            const height = signatureRef.current.offsetHeight * 2;
 
+            const encoder = new GIFEncoder(width, height);
+            encoder.setQuality(10);
+            encoder.start();
+
+            // Recording loop: Capture for ~3 seconds to get full cycle
+            const duration = 3000;
+            const startTime = performance.now();
+            let lastFrameTime = startTime;
+
+            while (performance.now() - startTime < duration) {
+                // Capture element
+                const dataUrl = await toPng(signatureRef.current, {
+                    pixelRatio: 2,
+                    backgroundColor: '#ffffff',
+                    cacheBust: true,
+                });
+
+                // Calculate accurate delay from last frame
+                // This ensures the GIF plays at exactly the recorded speed
+                const now = performance.now();
+                const actualDelay = now - lastFrameTime;
+                lastFrameTime = now;
+
+                encoder.setDelay(actualDelay);
+
+                // Load image to get raw pixel data
+                const img = new Image();
+                img.src = dataUrl;
+                await new Promise(r => img.onload = r);
+
+                const canvas = document.createElement('canvas');
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d', { willReadFrequently: true });
+                if (!ctx) continue;
+
+                ctx.drawImage(img, 0, 0);
+                // Add Frame to Encoder
+                encoder.addFrame(ctx);
+
+                // Minimal yield to let React/Browser render the next animation frame
+                await new Promise(r => setTimeout(r, 0));
+            }
+
+            encoder.finish();
+
+            // Download logic
+            const buffer = encoder.out.getData();
+            const blob = new Blob([buffer], { type: 'image/gif' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `qertex-signature-${logoVariant.toLowerCase()}.gif`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+
+        } catch (err) {
+            console.error("GIF Generation Failed", err);
+            alert("Failed to create GIF. Try again.");
+        } finally {
+            setIsGifRecording(false);
+        }
+    };
+
+    // ... Copy Image & Downlaod HTML (Same as before) ...
+    const handleCopyImage = async () => {
+        if (!signatureRef.current) return;
+        try {
+            const blob = await toBlob(signatureRef.current, { backgroundColor: '#ffffff', pixelRatio: 2 });
             if (blob) {
-                await navigator.clipboard.write([
-                    new ClipboardItem({ 'image/png': blob })
-                ]);
+                await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
                 setCopiedImage(true);
                 setTimeout(() => setCopiedImage(false), 2000);
             }
-        } catch (err) {
-            console.error("Failed to copy image", err);
-            alert("Could not create image. Please try again.");
-        }
+        } catch (err) { console.error(err); }
     };
 
     const handleDownload = () => {
@@ -142,15 +252,16 @@ export default function SignaturePage() {
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = "qertex-signature.html";
+        a.download = `qertex-signature.html`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
     };
 
+
     return (
-        <main className={`min-h-screen relative flex flex-col items-center justify-center p-6 bg-slate-950 overflow-hidden ${sora.className}`}>
+        <main className={`min-h-screen relative flex flex-col items-center justify-center pt-32 pb-20 px-6 bg-slate-950 overflow-hidden ${sora.className}`}>
 
             {/* --- NEBULA MESH BACKGROUND --- */}
             <div className="absolute inset-0 z-0 pointer-events-none">
@@ -160,15 +271,7 @@ export default function SignaturePage() {
                 <div className="absolute top-[20%] right-[30%] w-[30%] h-[30%] bg-[#0052FF]/10 rounded-full blur-[100px]" />
             </div>
 
-            {/* --- HEADER --- */}
-            <div className="absolute top-6 left-6 z-20">
-                <Link href="/">
-                    <button className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white/70 hover:text-white transition-colors bg-white/5 hover:bg-white/10 rounded-full border border-white/10 backdrop-blur-md">
-                        <ArrowLeft size={16} />
-                        Back to Home
-                    </button>
-                </Link>
-            </div>
+
 
             <div className="relative z-10 w-full max-w-6xl flex flex-col lg:flex-row items-start justify-center gap-12 mt-20 lg:mt-0">
 
@@ -176,192 +279,168 @@ export default function SignaturePage() {
                 <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.6, ease: "easeOut" }}
+                    transition={{ duration: 0.6 }}
                     className="w-full lg:w-1/3 flex flex-col gap-6"
                 >
                     <div className="text-left space-y-2">
                         <div className="flex items-center gap-2 mb-2">
-                            <QertexLogo className="w-6 h-6" animated={false} />
                             <span className="text-white/80 font-bold text-lg">Qertex</span>
                         </div>
                         <h1 className="text-3xl font-bold text-white">Signature Generator</h1>
-                        <p className="text-white/40 text-sm">Enter your details to generate your professional signature.</p>
+                        <p className="text-white/40 text-sm">Select a brand identity to generate its specific animated signature.</p>
                     </div>
 
                     <div className="space-y-4 p-6 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl">
-                        <div className="grid grid-cols-1 gap-4">
-                            <div>
-                                <label className="block text-xs font-medium text-white/50 mb-1 uppercase tracking-wider">Name</label>
-                                <input
-                                    type="text"
-                                    name="name"
-                                    placeholder="e.g. John Doe"
-                                    value={formData.name}
-                                    onChange={handleInputChange}
-                                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/20 focus:outline-none focus:border-[#0052FF] focus:bg-white/10 transition-all"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-xs font-medium text-white/50 mb-1 uppercase tracking-wider">Role</label>
-                                <input
-                                    type="text"
-                                    name="role"
-                                    value={formData.role}
-                                    onChange={handleInputChange}
-                                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/20 focus:outline-none focus:border-[#0052FF] focus:bg-white/10 transition-all"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-xs font-medium text-white/50 mb-1 uppercase tracking-wider">Phone</label>
-                                <input
-                                    type="text"
-                                    name="phone"
-                                    placeholder="+1 234 567 890"
-                                    value={formData.phone}
-                                    onChange={handleInputChange}
-                                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/20 focus:outline-none focus:border-[#0052FF] focus:bg-white/10 transition-all"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-xs font-medium text-white/50 mb-1 uppercase tracking-wider">Email</label>
-                                <input
-                                    type="email"
-                                    name="email"
-                                    value={formData.email}
-                                    onChange={handleInputChange}
-                                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/20 focus:outline-none focus:border-[#0052FF] focus:bg-white/10 transition-all"
-                                />
+
+                        {/* LOGO VARIANT SELECTOR */}
+                        <div>
+                            <label className="block text-xs font-medium text-white/50 mb-3 uppercase tracking-wider">Select Brand Identity</label>
+                            <div className="grid grid-cols-4 gap-2">
+                                {['BRAND', 'AI', 'QA', 'SEC'].map((variant) => (
+                                    <button
+                                        key={variant}
+                                        onClick={() => setLogoVariant(variant as any)}
+                                        className={`flex flex-col items-center justify-center p-3 rounded-lg border transition-all ${logoVariant === variant
+                                            ? 'bg-white/10 border-[#0052FF] text-white shadow-[0_0_15px_rgba(0,82,255,0.3)]'
+                                            : 'bg-white/5 border-transparent text-white/40 hover:bg-white/10 hover:text-white'
+                                            }`}
+                                    >
+                                        {/* Use Logo Component scaled down for icon preview */}
+                                        <div className="w-8 h-8 mb-2 flex items-center justify-center overflow-hidden">
+                                            <div className="scale-75">
+                                                <Logo forceMode={variant as any} />
+                                            </div>
+                                        </div>
+                                        <span className="text-[10px] font-bold">{variant}</span>
+                                    </button>
+                                ))}
                             </div>
                         </div>
+
+                        {/* INPUT FIELDS */}
+                        <div className="grid grid-cols-1 gap-4">
+                            {['name', 'role', 'phone', 'email'].map((field) => (
+                                <div key={field}>
+                                    <label className="block text-xs font-medium text-white/50 mb-1 uppercase tracking-wider">{field}</label>
+                                    <input
+                                        type={field === 'email' ? 'email' : 'text'}
+                                        name={field}
+                                        placeholder={`Enter ${field}...`}
+                                        value={(formData as any)[field]}
+                                        onChange={handleInputChange}
+                                        className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/20 focus:outline-none focus:border-[#0052FF] focus:bg-white/10 transition-all"
+                                    />
+                                </div>
+                            ))}
+                        </div>
+
+                        <button
+                            onClick={handleDownloadGif}
+                            disabled={isGifRecording}
+                            className={`w-full flex items-center justify-center gap-2 px-6 py-4 text-sm font-bold text-white rounded-lg transition-all ${isGifRecording ? 'bg-slate-700 cursor-not-allowed' : 'bg-purple-600 hover:bg-purple-700 shadow-xl shadow-purple-900/20'}`}
+                        >
+                            {isGifRecording ? (
+                                <>
+                                    <RefreshCw className="animate-spin w-4 h-4" />
+                                    Recording GIF...
+                                </>
+                            ) : (
+                                <>
+                                    <Video className="w-4 h-4" />
+                                    Download Signature GIF
+                                </>
+                            )}
+                        </button>
                     </div>
                 </motion.div>
 
-                {/* --- RIGHT: TITLE & PREVIEW --- */}
+                {/* --- RIGHT: PREVIEW --- */}
                 <motion.div
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
+                    transition={{ duration: 0.6, delay: 0.1 }}
                     className="w-full lg:w-2/3 flex flex-col gap-6"
                 >
                     <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-2xl shadow-2xl">
-
-                        {/* Card Header */}
                         <div className="px-6 py-4 border-b border-white/5 flex items-center justify-between">
-                            <span className="text-xs font-semibold text-white/50 uppercase tracking-wider">Live Preview</span>
+                            <span className="text-xs font-semibold text-white/50 uppercase tracking-wider">Signature Preview</span>
                             <div className="flex gap-1.5">
-                                <div className="w-2.5 h-2.5 rounded-full bg-red-500/20 border border-red-500/50" />
-                                <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/20 border border-yellow-500/50" />
-                                <div className="w-2.5 h-2.5 rounded-full bg-green-500/20 border border-green-500/50" />
+                                <div className="w-2.5 h-2.5 rounded-full bg-slate-700" />
+                                <div className="w-2.5 h-2.5 rounded-full bg-slate-700" />
                             </div>
                         </div>
 
-                        {/* --- SIGNATURE PREVIEW AREA --- */}
-                        <div className="p-10 bg-white/80 min-h-[400px] flex items-center justify-center">
+                        <div className="p-10 bg-white min-h-[400px] flex items-center justify-center">
 
-                            {/* THIS IS THE RENDERED SIGNATURE WRAPPED FOR COPYING */}
-                            <div ref={signatureRef} className="bg-white p-6 rounded-lg select-none pointer-events-none sm:select-text sm:pointer-events-auto">
+                            {/* SIGNATURE CONTAINER */}
+                            <div ref={signatureRef} className="bg-white p-8 rounded-lg select-none pointer-events-none sm:select-text sm:pointer-events-auto shadow-sm">
                                 <table cellPadding={0} cellSpacing={0} style={{ fontFamily: '"Arial", sans-serif', color: '#0f172a' }}>
                                     <tbody>
                                         <tr>
-                                            {/* Left Column: Logo & Slogan */}
-                                            <td style={{ paddingRight: '24px', verticalAlign: 'top', textAlign: 'center' }}>
-                                                <div className="flex flex-col items-center">
-                                                    {/* Logo Container */}
-                                                    <div className="flex items-center justify-center w-12 h-12 bg-slate-950 rounded-md">
-                                                        <QertexLogo className="w-8 h-8" animated={false} />
-                                                    </div>
-
-                                                    {/* Slogan */}
-                                                    <div style={{ marginTop: '8px', fontSize: '10px', fontWeight: '600', color: '#64748b', fontFamily: 'monospace', letterSpacing: '-0.5px', lineHeight: '1.2', whiteSpace: 'nowrap' }}>
-                                                        Intelligence.<br />Switched On.
+                                            {/* LEFT: FULL LOGO */}
+                                            <td style={{ paddingRight: '32px', verticalAlign: 'middle', textAlign: 'center' }}>
+                                                {/* We render the React Component here. html-to-image captures this. */}
+                                                <div ref={logoContainerRef} className="bg-[#020617] inline-block p-4 rounded-xl shadow-lg border border-white/10 relative overflow-hidden">
+                                                    {/* Background Glow Effect */}
+                                                    <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 pointer-events-none" />
+                                                    <div className="relative z-10">
+                                                        <Logo forceMode={logoVariant} />
                                                     </div>
                                                 </div>
                                             </td>
 
-                                            {/* Middle Column: Vertical Line */}
-                                            <td style={{ borderRight: '2px solid #0052FF', padding: '0', width: '0px' }}></td>
-                                            <td style={{ width: '24px' }}></td>
+                                            {/* DIVIDER */}
+                                            <td style={{ borderRight: `2px solid ${colors.primary}`, padding: '0', width: '0px' }}></td>
+                                            <td style={{ width: '32px' }}></td>
 
-                                            {/* Right Column: Info */}
-                                            <td style={{ verticalAlign: 'top' }}>
-                                                <div style={{ marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                                    <span style={{ fontSize: '18px', fontWeight: 'bold', color: '#0052FF', lineHeight: '1.2' }}>
+                                            {/* RIGHT: INFO */}
+                                            <td style={{ verticalAlign: 'top', fontFamily: colors.fontFamily }}>
+                                                <div style={{ marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                    <span style={{ fontSize: '18px', fontWeight: 'bold', color: colors.primary, lineHeight: '1.2', fontFamily: colors.fontFamily }}>
                                                         {formData.name || formData.role}
-                                                    </span>
-                                                    {/* Pulsing Dot */}
-                                                    <span className="relative flex h-2.5 w-2.5">
-                                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                                                        <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
                                                     </span>
                                                 </div>
 
-                                                {/* If Name is provided, show role below it. If no name, role is header so we skip this line to avoid dupe */}
                                                 {formData.name && (
-                                                    <div style={{ fontSize: '14px', fontWeight: '600', color: '#0f172a', marginBottom: '2px' }}>
+                                                    <div style={{ fontSize: '14px', fontWeight: '600', color: '#334155', marginBottom: '4px', border: '0', fontFamily: colors.fontFamily }}>
                                                         {formData.role}
                                                     </div>
                                                 )}
 
-                                                <div style={{ fontSize: '14px', fontWeight: formData.name ? '400' : '600', color: '#0f172a', marginBottom: '8px' }}>
+                                                <div style={{ fontSize: '14px', fontWeight: '500', color: '#64748b', marginBottom: '12px', fontFamily: colors.fontFamily }}>
                                                     {formData.company}
                                                 </div>
 
-                                                <div style={{ fontSize: '13px', color: '#475569', marginBottom: '14px' }}>
+                                                <div style={{ fontSize: '12px', color: '#64748b', marginBottom: '16px', lineHeight: '1.6', fontFamily: colors.fontFamily }}>
                                                     {formData.phone && (
                                                         <>
-                                                            <a href={`tel:${formData.phone}`} style={{ color: '#475569', textDecoration: 'none', transition: 'color 0.2s' }}>{formData.phone}</a>
+                                                            <a href={`tel:${formData.phone}`} style={{ color: '#64748b', textDecoration: 'none', transition: 'color 0.2s', fontFamily: colors.fontFamily }}>{formData.phone}</a>
                                                             <span style={{ margin: '0 8px', color: '#cbd5e1' }}>|</span>
                                                         </>
                                                     )}
-                                                    <a href={`mailto:${formData.email}`} style={{ color: '#475569', textDecoration: 'none', transition: 'color 0.2s' }}>{formData.email}</a>
+                                                    <a href={`mailto:${formData.email}`} style={{ color: '#64748b', textDecoration: 'none', transition: 'color 0.2s', fontFamily: colors.fontFamily }}>{formData.email}</a>
                                                     <span style={{ margin: '0 8px', color: '#cbd5e1' }}>|</span>
-                                                    <a href={`https://${formData.website.replace(/^https?:\/\//, '')}`} style={{ color: '#475569', textDecoration: 'none', transition: 'color 0.2s' }}>{formData.website}</a>
+                                                    <a href={`https://${formData.website.replace(/^https?:\/\//, '')}`} style={{ color: '#64748b', textDecoration: 'none', transition: 'color 0.2s', fontFamily: colors.fontFamily }}>{formData.website}</a>
                                                 </div>
 
-                                                {/* Footer Line */}
-                                                <div style={{ borderTop: '1px solid #e2e8f0', paddingTop: '10px', fontSize: '11px', color: '#64748b', letterSpacing: '0.05em', width: '100%', minWidth: '240px' }}>
-                                                    <span style={{ fontWeight: '600' }}>UAE | JORDAN | BAHRAIN</span>
+                                                <div style={{ borderTop: '1px solid #e2e8f0', paddingTop: '12px', fontSize: '10px', fontWeight: '600', color: '#94a3b8', letterSpacing: '0.05em', width: '100%', minWidth: '240px', textTransform: 'uppercase', fontFamily: colors.fontFamily }}>
+                                                    UAE <span style={{ color: colors.primary }}>&bull;</span> JORDAN <span style={{ color: colors.primary }}>&bull;</span> BAHRAIN
                                                 </div>
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
-
                         </div>
 
-                        {/* --- FOOTER CONTROLS --- */}
-                        <div className="px-6 py-4 bg-white/5 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
-                            <p className="text-xs text-white/40">Ready to use in Gmail, Outlook, and Apple Mail.</p>
-
-                            <div className="flex gap-3 w-full sm:w-auto">
-                                <button
-                                    onClick={handleCopyImage}
-                                    title="Copy as Image"
-                                    className="flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-white/80 bg-white/5 hover:bg-white/10 rounded-lg border border-white/10 transition-all hover:border-white/20 active:scale-95"
-                                >
-                                    {copiedImage ? <Check size={16} className="text-green-400" /> : <ImageIcon size={16} />}
-                                    <span className="hidden sm:inline">Copy Img</span>
-                                </button>
-
-                                <button
-                                    onClick={handleDownload}
-                                    className="flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-white/80 bg-white/5 hover:bg-white/10 rounded-lg border border-white/10 transition-all hover:border-white/20 active:scale-95"
-                                >
-                                    <Download size={16} />
-                                    <span className="hidden sm:inline">HTML</span>
-                                </button>
-
-                                <button
-                                    onClick={handleCopy}
-                                    className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-2.5 text-sm font-semibold text-white bg-[#0052FF] hover:bg-[#0040D0] shadow-lg shadow-blue-500/20 rounded-lg border border-blue-400/20 transition-all hover:scale-105 active:scale-95"
-                                >
-                                    {copied ? <Check size={16} strokeWidth={3} /> : <Copy size={16} />}
-                                    {copied ? "Copied!" : "Copy Sig"}
-                                </button>
-                            </div>
+                        <div className="px-6 py-4 bg-white/5 border-t border-white/5 flex gap-4 justify-end">
+                            <button onClick={handleDownload} className="flex gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded text-sm transition-colors">
+                                <Download size={16} /> HTML
+                            </button>
+                            <button onClick={handleCopy} className="flex gap-2 px-4 py-2 bg-[#0052FF] hover:bg-[#0040D0] text-white rounded text-sm transition-colors font-bold">
+                                {copied ? <Check size={16} /> : <Copy size={16} />} Copy Sig
+                            </button>
                         </div>
-
                     </div>
                 </motion.div>
             </div>
