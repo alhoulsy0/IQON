@@ -577,7 +577,34 @@ export default function ProfilePage() {
         <SlideSectionHeader key="projects-header" title="MISSION REPORTS" subtitle="Proven Impact" bgClass="bg-green-900/20" />,
         ...PROJECTS.map(p => <SlideProject key={p.id} project={p} />),
 
-        // 5. ENGAGEMENT
+        // 5. DOMAIN EXPERTISE - TAXATION
+        <SlideSectionHeader key="tax-header" title="DOMAIN EXPERTISE" subtitle="Taxation & Financial Compliance" bgClass="bg-red-950" />,
+
+        <SlideProduct
+            key="global-compliance"
+            title="Global Tax Compliance"
+            subtitle="Navigating Multi-Jurisdictional Complexity"
+            desc="We validate logic against evolving global tax laws. From Canadian GST/HST/PST to EU VAT and US Sales Tax, our framework ensures your software adapts to regulatory changes instantly."
+            features={["Jurisdiction Mapping", "Real-Time Rate Validation", "Cross-Border Logic"]}
+        />,
+
+        <SlideProduct
+            key="calc-engine"
+            title="Algorithmic Precision"
+            subtitle="Zero-Defect Financial Accuracy"
+            desc="We stress-test the math that matters. Our scripts validate floating-point precision, complex tiering, and threshold exemptions to ensure every penny is accounted for before production."
+            features={["Rounding Rules", "Tiered Tax Brackets", "Exemption Logic"]}
+        />,
+
+        <SlideProduct
+            key="regulatory-reporting"
+            title="Audit-Ready Reporting"
+            subtitle="From Database to Government Gateway"
+            desc="End-to-end validation of legal documents. We verify that data flows correctly from your ledger to final T4s, 1099s, and VAT returns, ensuring seamless audits."
+            features={["OCR Verification", "XML Schema Validation", "Submission Integrity"]}
+        />,
+
+        // 6. ENGAGEMENT
         <SlideSectionHeader key="engagement-header" title="ENGAGEMENT" subtitle="Partnership Models" />,
         <SlideEngagement key="models" />,
         <SlideContact key="contact" />
@@ -586,7 +613,11 @@ export default function ProfilePage() {
     // WRAP SLIDES WITH BRANDING
     const slides = rawSlides.map((slide, index) => (
         <div key={index} className="w-full h-full relative">
-            <BrandingOverlay slideIndex={index} totalSlides={rawSlides.length} />
+            <BrandingOverlay
+                slideIndex={index}
+                totalSlides={rawSlides.length}
+                showLogo={index === 0 || index === rawSlides.length - 1}
+            />
             {slide}
         </div>
     ));
@@ -607,44 +638,53 @@ export default function ProfilePage() {
         setIsGenerating(true);
         setIsPrintMode(true);
 
-        setTimeout(async () => {
-            if (!containerRef.current) return;
-            try {
-                const imgData = await toPng(containerRef.current, {
+        // Allow DOM to update with the print-mode layout
+        await new Promise((resolve) => setTimeout(resolve, 500));
+
+        try {
+            const doc = new jsPDF({
+                orientation: "landscape",
+                unit: "mm",
+                format: "a4",
+            });
+
+            const elements = document.getElementsByClassName("pdf-slide");
+            const pdfWidth = doc.internal.pageSize.getWidth();
+            const pdfHeight = doc.internal.pageSize.getHeight();
+
+            for (let i = 0; i < elements.length; i++) {
+                const el = elements[i] as HTMLElement;
+
+                // Capture each slide individually
+                // pixelRatio: 2 ensures high quality for text
+                const imgData = await toPng(el, {
                     quality: 1.0,
-                    pixelRatio: 4, // Full HD / 4K Quality
-                    backgroundColor: "#020617",
+                    pixelRatio: 2,
                     cacheBust: true,
+                    backgroundColor: "#020617"
                 });
 
-                const pdf = new jsPDF("p", "mm", "a4");
-                const pdfWidth = pdf.internal.pageSize.getWidth();
+                if (i > 0) doc.addPage();
 
-                const img = new Image();
-                img.src = imgData;
-                await new Promise((resolve) => { img.onload = resolve; });
-
-                const ratio = pdfWidth / img.width;
-                const calculatedPdfHeight = img.height * ratio;
-
-                const longPdf = new jsPDF('p', 'mm', [pdfWidth, calculatedPdfHeight]);
-                longPdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, calculatedPdfHeight);
-                longPdf.save("Qertex_Master_Deck_2025.pdf");
-
-            } catch (error) {
-                console.error("PDF Export Failed:", error);
-                alert("Export failed.");
-            } finally {
-                setIsPrintMode(false);
-                setIsGenerating(false);
+                // Add to PDF, stretching to fit A4 perfectly (since container matches aspect ratio)
+                doc.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
             }
-        }, 1000);
+
+            doc.save("Qertex_Master_Deck_2025.pdf");
+
+        } catch (error) {
+            console.error("PDF Export Failed:", error);
+            alert("Export failed.");
+        } finally {
+            setIsPrintMode(false);
+            setIsGenerating(false);
+        }
     };
 
     return (
         <main className="bg-slate-950 min-h-screen relative text-white overflow-hidden font-sans selection:bg-iqon-red selection:text-white">
 
-            {/* CONTROLS */}
+            {/* CONTROLS (Hidden during print mode) */}
             {!isPrintMode && (
                 <>
                     <div className="absolute top-24 right-8 z-50 flex gap-2">
@@ -669,13 +709,20 @@ export default function ProfilePage() {
             )}
 
             {/* VIEWPORT */}
-            <div ref={containerRef} className={`${isPrintMode ? "w-full h-auto py-20" : "w-full h-screen relative"}`}>
+            <div ref={containerRef} className={`${isPrintMode ? "w-full h-auto bg-slate-900" : "w-full h-screen relative"}`}>
 
                 {isPrintMode ? (
-                    // PRINT MODE
-                    <div className="space-y-0">
+                    // PRINT MODE: FIXED A4 ASPECT RATIO CONTAINERS
+                    <div className="flex flex-col items-center gap-20 py-20">
                         {slides.map((slide, index) => (
-                            <div key={index} className="w-full h-[700px] border-b border-slate-900 relative bg-slate-950 overflow-hidden break-after-page">
+                            <div
+                                key={index}
+                                className="pdf-slide relative bg-slate-950 overflow-hidden shadow-2xl border border-slate-800"
+                                // A4 Landscape (297mm x 210mm) => ~1.414 Aspect Ratio
+                                // We specific pixel dims to ensure 'toPng' captures consistent results.
+                                // 1123px x 794px is roughly A4 @ 96 DPI
+                                style={{ width: "1123px", height: "794px", flexShrink: 0 }}
+                            >
                                 {slide}
                             </div>
                         ))}

@@ -11,8 +11,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Qertex | Iconic AI Consultancy",
-  description: "Premier Digital Assurance, Cyber Resilience, and AI consultancy.",
+  title: "Qertex | Intelligence. Switched On.",
+  description: "Deep-Tech Architecture & Enterprise Engineering. Leading the industry in Software Quality, AI Technology, Cybersecurity, and Strategic Staffing.",
 };
 
 export default function RootLayout({
@@ -29,7 +29,7 @@ export default function RootLayout({
         <Navbar />
         {children}
         <Footer />
-        <FloatingAgent />
+        {/* <FloatingAgent /> */}
       </body>
     </html>
   );
