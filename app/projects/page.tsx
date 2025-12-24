@@ -39,17 +39,7 @@ const projects = [
         color: "from-purple-600 to-violet-900",
         icon: Globe
     },
-    {
-        id: "cit-rollout",
-        title: "Multi-Regional CIT Rollout",
-        subtitle: "Corporate Income Tax Architecture",
-        category: "Enterprise Finance",
-        description: "Engineered the QA architecture for a global Corporate Income Tax rollout. Focused on creating a transparent, reliable, and secure reporting structure within SAP.",
-        techEdge: "Specialized in process verification and automated data reconciliation to ensure financial reporting mirrored real-world tax liabilities.",
-        impact: "Enabled organizations to achieve an audit-ready CIT rollout by identifying and resolving integration bottlenecks before deployment.",
-        color: "from-orange-600 to-red-900",
-        icon: Layers
-    },
+
     {
         id: "lg-mobile",
         title: "LG Electronics MENA",

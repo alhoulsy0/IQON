@@ -115,16 +115,7 @@ const PROJECTS = [
         solution: "Engineered a custom validation framework to verifying tax liability calculations against thousands of edge-case scenarios.",
         impact: "Zero Calculation Errors"
     },
-    {
-        id: "PRJ-04",
-        client: "Enterprise Conglomerate",
-        title: "Corporate Income Tax (CIT)",
-        type: "Financial Architecture",
-        icon: Layers,
-        challenge: "Rolling out a unified CIT reporting structure across 15+ subsidiaries with disparate legacy ERP systems.",
-        solution: "Led the integration testing strategy, ensuring seamless data flow and accurate consolidated financial reporting.",
-        impact: "Seamless Rollout"
-    },
+
     {
         id: "PRJ-05",
         client: "LG Electronics",
