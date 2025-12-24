@@ -21,7 +21,7 @@ export const LogoIcon = ({ className }: { className?: string }) => {
     return <LogoIconContainer mode={logoMode} className={className} />;
 };
 
-export const Logo = ({ forceMode }: { forceMode?: "BRAND" | "AI" | "QA" | "SEC" }) => {
+export const Logo = ({ forceMode, lightMode = false, isStatic = false }: { forceMode?: "BRAND" | "AI" | "QA" | "SEC", lightMode?: boolean, isStatic?: boolean }) => {
     // Logo Rotation State (Synchronized Logic for Text)
     const [logoMode, setLogoMode] = useState<"BRAND" | "AI" | "QA" | "SEC">(forceMode || "BRAND");
 
@@ -45,7 +45,7 @@ export const Logo = ({ forceMode }: { forceMode?: "BRAND" | "AI" | "QA" | "SEC" 
 
     // Determine Active Color for Dynamic Styling
     const activeColor =
-        logoMode === 'BRAND' ? '#8b5cf6' : // Violet/Purple for Gemini feel
+        logoMode === 'BRAND' ? '#DC2626' : // Red for Trusted Partner
             logoMode === 'AI' ? '#E60023' :
                 logoMode === 'QA' ? '#2DD4BF' :
                     '#0EA5E9';
@@ -60,8 +60,8 @@ export const Logo = ({ forceMode }: { forceMode?: "BRAND" | "AI" | "QA" | "SEC" 
             `}</style>
 
             {/* ICON CONTAINER */}
-            <div className="w-14 h-14">
-                <LogoIconContainer mode={logoMode} />
+            <div className={`w-14 h-14 ${lightMode ? 'brightness-75 contrast-125' : ''}`}>
+                <LogoIconContainer mode={logoMode} isStatic={isStatic} />
             </div>
 
             {/* TEXT CONTENT - WITH SMART MOTION FILL */}
@@ -73,9 +73,9 @@ export const Logo = ({ forceMode }: { forceMode?: "BRAND" | "AI" | "QA" | "SEC" 
                 <span
                     className="text-2xl font-bold tracking-wide font-sans leading-none relative bg-clip-text text-transparent transition-all duration-700"
                     style={{
-                        backgroundImage: `linear-gradient(120deg, #ffffff 30%, ${activeColor} 50%, #ffffff 70%)`,
+                        backgroundImage: `linear-gradient(120deg, ${lightMode ? '#0f172a' : '#ffffff'} 30%, ${activeColor} 50%, ${lightMode ? '#0f172a' : '#ffffff'} 70%)`,
                         backgroundSize: '200% auto',
-                        animation: 'textShine 5s linear infinite'
+                        animation: isStatic ? 'none' : 'textShine 5s linear infinite'
                     }}
                 >
                     QERTEX
@@ -101,10 +101,12 @@ export const Logo = ({ forceMode }: { forceMode?: "BRAND" | "AI" | "QA" | "SEC" 
                                 style={{
                                     // Subtle color tint for the subtitle too
                                     color:
-                                        logoMode === 'BRAND' ? '#e9d5ff' : // Light Purple
-                                            logoMode === 'AI' ? '#fecaca' :
-                                                logoMode === 'QA' ? '#ccfbf1' :
-                                                    '#bae6fd'
+                                        lightMode ? '#475569' : ( // Dark Slate for Light Mode
+                                            logoMode === 'BRAND' ? '#E5E7EB' : // Light Gray
+                                                logoMode === 'AI' ? '#fecaca' :
+                                                    logoMode === 'QA' ? '#ccfbf1' :
+                                                        '#bae6fd'
+                                        )
                                 }}
                             >
                                 {logoMode === 'BRAND' && "Trusted Partner"}
@@ -122,11 +124,11 @@ export const Logo = ({ forceMode }: { forceMode?: "BRAND" | "AI" | "QA" | "SEC" 
 
 
 // Internal helper to ensure sync if controlled
-const LogoIconContainer = ({ mode, className }: { mode: "BRAND" | "AI" | "QA" | "SEC", className?: string }) => {
+const LogoIconContainer = ({ mode, className, isStatic = false }: { mode: "BRAND" | "AI" | "QA" | "SEC", className?: string, isStatic?: boolean }) => {
     return (
         <div className={`relative w-full h-full flex items-center justify-center perspective-[1200px] ${className || ""}`}>
             {/* Reactor Ring (Shared) - Hidden for Gemini Mode to let the spark shine */}
-            <svg className={`absolute inset-0 w-full h-full animate-[spin_10s_linear_infinite] opacity-30 pointer-events-none transition-opacity duration-500 ${mode === 'BRAND' ? 'opacity-0' : 'opacity-30'}`} viewBox="0 0 60 60">
+            <svg className={`absolute inset-0 w-full h-full ${!isStatic ? 'animate-[spin_10s_linear_infinite]' : ''} opacity-30 pointer-events-none transition-opacity duration-500 ${mode === 'BRAND' ? 'opacity-0' : 'opacity-30'}`} viewBox="0 0 60 60">
                 <circle cx="30" cy="30" r="28" fill="none" stroke="white" strokeWidth="0.5" strokeDasharray="4 6" />
             </svg>
 
@@ -143,27 +145,30 @@ const LogoIconContainer = ({ mode, className }: { mode: "BRAND" | "AI" | "QA" | 
                         {/* BRAND: GEMINI MOTION (Star Sparkle) */}
                         <div className="relative w-full h-full flex items-center justify-center">
                             {/* Main Star */}
-                            <svg viewBox="0 0 24 24" className="w-full h-full drop-shadow-[0_0_15px_rgba(139,92,246,0.6)]">
+                            <svg viewBox="0 0 24 24" className="w-full h-full drop-shadow-[0_0_15px_rgba(220,38,38,0.6)]">
                                 <defs>
                                     <linearGradient id="gemini-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                        <stop offset="0%" stopColor="#3b82f6" /> {/* Blue */}
-                                        <stop offset="50%" stopColor="#8b5cf6" /> {/* Purple */}
-                                        <stop offset="100%" stopColor="#ec4899" /> {/* Pink */}
+                                        <stop offset="0%" stopColor="#f8fafc" /> {/* White/Slate-50 */}
+                                        <stop offset="50%" stopColor="#DC2626" /> {/* Red */}
+                                        <stop offset="100%" stopColor="#475569" /> {/* Slate-600 */}
                                     </linearGradient>
                                 </defs>
                                 <path
                                     d="M12 0 C12 0 14 8 22 12 C 14 16 12 24 12 24 C 12 24 10 16 2 12 C 10 8 12 0 12 0 Z"
                                     fill="url(#gemini-grad)"
                                 >
-                                    <animate attributeName="d"
-                                        values="M12 0 C12 0 14 8 22 12 C 14 16 12 24 12 24 C 12 24 10 16 2 12 C 10 8 12 0 12 0 Z; 
+                                    {!isStatic && (
+                                        <animate attributeName="d"
+                                            values="M12 0 C12 0 14 8 22 12 C 14 16 12 24 12 24 C 12 24 10 16 2 12 C 10 8 12 0 12 0 Z; 
                                                 M12 2 C12 2 15 9 20 12 C 15 15 12 22 12 22 C 12 22 9 15 4 12 C 9 9 12 2 12 2 Z; 
                                                 M12 0 C12 0 14 8 22 12 C 14 16 12 24 12 24 C 12 24 10 16 2 12 C 10 8 12 0 12 0 Z"
-                                        dur="3s"
-                                        repeatCount="indefinite"
-                                        calcMode="spline"
-                                        keySplines="0.4 0 0.2 1; 0.4 0 0.2 1"
-                                    />
+                                            dur="3s"
+                                            repeatCount="indefinite"
+                                            calcMode="spline"
+                                            keySplines="0.4 0 0.2 1; 0.4 0 0.2 1"
+                                        />
+                                    )}
+                                    {isStatic && <path d="M12 0 C12 0 14 8 22 12 C 14 16 12 24 12 24 C 12 24 10 16 2 12 C 10 8 12 0 12 0 Z" />}
                                 </path>
                             </svg>
                             {/* Secondary Star (Offset) */}
@@ -172,7 +177,7 @@ const LogoIconContainer = ({ mode, className }: { mode: "BRAND" | "AI" | "QA" | 
                                     d="M12 0 C12 0 14 8 22 12 C 14 16 12 24 12 24 C 12 24 10 16 2 12 C 10 8 12 0 12 0 Z"
                                     fill="url(#gemini-grad)"
                                 >
-                                    <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="10s" repeatCount="indefinite" />
+                                    {!isStatic && <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="10s" repeatCount="indefinite" />}
                                 </path>
                             </svg>
                         </div>
@@ -209,22 +214,26 @@ const LogoIconContainer = ({ mode, className }: { mode: "BRAND" | "AI" | "QA" | 
                                 <circle cx="32" cy="20" r="2.5" />
                                 <circle cx="20" cy="32" r="2.5" />
                             </g>
-                            <circle r="1.5" fill="white">
-                                <animateMotion path="M 20 8 L 8 20" dur="1.5s" repeatCount="indefinite" />
-                                <animate attributeName="opacity" values="0;1;0" dur="1.5s" repeatCount="indefinite" />
-                            </circle>
-                            <circle r="1.5" fill="white">
-                                <animateMotion path="M 8 20 L 20 32" dur="1.5s" begin="0.5s" repeatCount="indefinite" />
-                                <animate attributeName="opacity" values="0;1;0" dur="1.5s" begin="0.5s" repeatCount="indefinite" />
-                            </circle>
-                            <circle r="1.5" fill="white">
-                                <animateMotion path="M 32 20 L 8 20" dur="2s" begin="0.2s" repeatCount="indefinite" />
-                                <animate attributeName="opacity" values="0;1;0" dur="2s" begin="0.2s" repeatCount="indefinite" />
-                            </circle>
-                            <circle r="1" fill="#E60023">
-                                <animateMotion path="M 20 8 L 20 32" dur="1s" begin="1s" repeatCount="indefinite" />
-                                <animate attributeName="opacity" values="1;0" dur="1s" begin="1s" repeatCount="indefinite" />
-                            </circle>
+                            {!isStatic && (
+                                <>
+                                    <circle r="1.5" fill="white">
+                                        <animateMotion path="M 20 8 L 8 20" dur="1.5s" repeatCount="indefinite" />
+                                        <animate attributeName="opacity" values="0;1;0" dur="1.5s" repeatCount="indefinite" />
+                                    </circle>
+                                    <circle r="1.5" fill="white">
+                                        <animateMotion path="M 8 20 L 20 32" dur="1.5s" begin="0.5s" repeatCount="indefinite" />
+                                        <animate attributeName="opacity" values="0;1;0" dur="1.5s" begin="0.5s" repeatCount="indefinite" />
+                                    </circle>
+                                    <circle r="1.5" fill="white">
+                                        <animateMotion path="M 32 20 L 8 20" dur="2s" begin="0.2s" repeatCount="indefinite" />
+                                        <animate attributeName="opacity" values="0;1;0" dur="2s" begin="0.2s" repeatCount="indefinite" />
+                                    </circle>
+                                    <circle r="1" fill="#E60023">
+                                        <animateMotion path="M 20 8 L 20 32" dur="1s" begin="1s" repeatCount="indefinite" />
+                                        <animate attributeName="opacity" values="1;0" dur="1s" begin="1s" repeatCount="indefinite" />
+                                    </circle>
+                                </>
+                            )}
                         </svg>
                     </motion.div>
                 )}
@@ -247,15 +256,15 @@ const LogoIconContainer = ({ mode, className }: { mode: "BRAND" | "AI" | "QA" | 
                             </defs>
                             <g transform="translate(20 20)">
                                 <g>
-                                    <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="10s" repeatCount="indefinite" />
+                                    {!isStatic && <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="10s" repeatCount="indefinite" />}
                                     <rect x="-12" y="-12" width="24" height="24" rx="4" fill="none" stroke="#2DD4BF" strokeWidth="1" opacity="0.6" />
                                 </g>
                             </g>
                             <path d="M14 20 L18 24 L26 14" stroke="#2DD4BF" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" filter="url(#qa-glow-controlled)" fill="none">
-                                <animate attributeName="stroke-dasharray" values="0 20; 20 20" dur="1s" fill="freeze" />
+                                {!isStatic && <animate attributeName="stroke-dasharray" values="0 20; 20 20" dur="1s" fill="freeze" />}
                             </path>
-                            <rect x="28" y="8" width="2" height="2" fill="white" className="animate-pulse" />
-                            <rect x="8" y="28" width="2" height="2" fill="white" className="animate-pulse" />
+                            <rect x="28" y="8" width="2" height="2" fill="white" className={!isStatic ? "animate-pulse" : ""} />
+                            <rect x="8" y="28" width="2" height="2" fill="white" className={!isStatic ? "animate-pulse" : ""} />
                         </svg>
                     </motion.div>
                 )}
@@ -279,10 +288,14 @@ const LogoIconContainer = ({ mode, className }: { mode: "BRAND" | "AI" | "QA" | 
                             <path d="M20 4 L34 12 V22 L20 36 L6 22 V12 Z" fill="#0EA5E9" fillOpacity="0.1" stroke="#0EA5E9" strokeWidth="1" filter="url(#sec-glow-controlled)" />
                             <rect x="14" y="16" width="12" height="10" rx="2" fill="white" />
                             <path d="M17 16 V13 A3 3 0 0 1 23 13 V16" fill="none" stroke="white" strokeWidth="1.5" />
-                            <line x1="0" y1="20" x2="40" y2="20" stroke="#0EA5E9" strokeWidth="1.5" opacity="0.8">
-                                <animate attributeName="y1" values="4;36;4" dur="2s" repeatCount="indefinite" />
-                                <animate attributeName="y2" values="4;36;4" dur="2s" repeatCount="indefinite" />
-                                <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" />
+                            <line x1="0" y1="20" x2="40" y2="20" stroke="#0EA5E9" strokeWidth="1.5" opacity={isStatic ? "0" : "0.8"}>
+                                {!isStatic && (
+                                    <>
+                                        <animate attributeName="y1" values="4;36;4" dur="2s" repeatCount="indefinite" />
+                                        <animate attributeName="y2" values="4;36;4" dur="2s" repeatCount="indefinite" />
+                                        <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" />
+                                    </>
+                                )}
                             </line>
                         </svg>
                     </motion.div>

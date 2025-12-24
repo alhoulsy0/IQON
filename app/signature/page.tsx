@@ -11,7 +11,19 @@ const GIFEncoder = require('gif-encoder-2');
 
 const sora = Sora({ subsets: ["latin"], weight: ["400", "500", "600", "700"] });
 
+import { useRouter } from "next/navigation";
+
 export default function SignaturePage() {
+    const router = useRouter();
+
+    // --- AUTH CHECK ---
+    React.useEffect(() => {
+        const token = localStorage.getItem("qertex_admin_token");
+        if (!token) {
+            router.push("/login?redirect=/signature");
+        }
+    }, [router]);
+
     const [copied, setCopied] = useState(false);
     const [copiedImage, setCopiedImage] = useState(false);
     const [isGifRecording, setIsGifRecording] = useState(false);
@@ -34,9 +46,9 @@ export default function SignaturePage() {
     const getThemeAssets = () => {
         switch (logoVariant) {
             case 'BRAND': return {
-                primary: '#8b5cf6',
-                accent: '#a78bfa',
-                fontFamily: "'Arial', 'Helvetica', sans-serif", // Clean, Corporate, Safe
+                primary: '#DC2626', // Red
+                accent: '#E5E7EB',  // Gray
+                fontFamily: "'Arial', 'Helvetica', sans-serif",
                 fontLabel: "Clean Sans"
             };
             case 'AI': return {
@@ -52,9 +64,9 @@ export default function SignaturePage() {
                 fontLabel: "Tech Humanist"
             };
             case 'SEC': return {
-                primary: '#0EA5E9',
-                accent: '#7dd3fc',
-                fontFamily: "'Courier New', 'Courier', monospace", // Code, Terminal, Security context
+                primary: '#DC2626', // Red
+                accent: '#9CA3AF',  // Gray
+                fontFamily: "'Courier New', 'Courier', monospace",
                 fontLabel: "Monospace"
             };
             default: return {

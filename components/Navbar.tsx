@@ -90,6 +90,13 @@ const Navbar = () => {
                     {/* Desktop Actions */}
                     <div className="hidden md:flex items-center gap-6">
                         <Link
+                            href="/login"
+                            className="bg-white/5 hover:bg-white/10 p-2 rounded-full text-white/50 hover:text-white transition-colors border border-transparent hover:border-white/10"
+                            title="Admin Login"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
+                        </Link>
+                        <Link
                             href="/contact"
                             className="px-6 py-2.5 bg-white/10 hover:bg-iqon-red text-white text-sm font-bold rounded-full transition-all duration-300 border border-white/5 hover:border-iqon-red/50"
                         >

@@ -2,10 +2,10 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronRight, ChevronLeft, Download, Shield, Zap, Users, Globe, Crosshair, Scale, Cpu, Network, CheckCircle2, TrendingUp, Lock, Terminal, Activity, FileCheck, ArrowRight, ShieldCheck, Database, Layers, Smartphone, Eye, Server, Code2, Rocket, Briefcase, History, Hexagon } from "lucide-react";
+import { ChevronRight, ChevronLeft, Download, Shield, Zap, Users, Globe, Crosshair, Scale, Cpu, Network, CheckCircle2, TrendingUp, Lock, Terminal, Activity, FileCheck, ArrowRight, ShieldCheck, Database, Layers, Smartphone, Eye, Server, Code2, Rocket, Briefcase, History, Hexagon, Maximize, Minimize } from "lucide-react";
 import { toPng } from "html-to-image";
 import jsPDF from "jspdf";
-import { QertexLogo } from "@/components/QertexLogo"; // Import actual logo
+import { Logo } from "@/components/Logo";
 
 // --- DATA: CORE CAPABILITIES (SERVICES) ---
 
@@ -175,14 +175,8 @@ const BrandingOverlay = ({ slideIndex, totalSlides, showLogo = true }: { slideIn
         {/* HEADER */}
         <div className="flex justify-between items-start">
             {/* LOGO */}
-            <div className={`flex items-center gap-3 text-white ${!showLogo ? 'opacity-0' : ''}`}>
-                <QertexLogo className="w-10 h-10 md:w-12 md:h-12" /> {/* Real Logo */}
-                <div className="flex flex-col leading-none">
-                    <span className="font-black text-xl md:text-2xl tracking-widest uppercase">
-                        Qer<span className="text-iqon-red">tex</span>
-                    </span>
-                    <span className="text-[9px] font-mono text-slate-400 tracking-[0.1em] lowercase relative -top-0.5">Intelligence. Switched On.</span>
-                </div>
+            <div className={`flex items-center gap-3 text-white scale-75 origin-top-left md:scale-100 ${!showLogo ? 'opacity-0' : ''}`}>
+                <Logo forceMode="BRAND" />
             </div>
             {/* CONFIDENTIAL MARKER */}
             <div className="flex items-center gap-3">
@@ -313,11 +307,12 @@ const SlideHierarchy = () => (
                 transition={{ duration: 0.5 }}
                 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-slate-950 border border-white/20 rounded-full flex flex-col items-center justify-center z-20 shadow-[0_0_50px_rgba(255,255,255,0.1)] group hover:border-iqon-red/50 transition-colors duration-500"
             >
-                <div className="w-16 h-16 bg-iqon-red rounded-full flex items-center justify-center mb-4 shadow-[0_0_20px_rgba(220,38,38,0.5)] group-hover:scale-110 transition-transform duration-300">
-                    <QertexLogo className="w-8 h-8 text-white fill-white/20" />
+                <div className="w-24 h-24 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                    <div className="scale-125">
+                        <Logo />
+                    </div>
                 </div>
-                <div className="font-bold text-white text-lg">QERTEX CORE</div>
-                <div className="text-[10px] text-slate-400 uppercase tracking-widest mt-1">Central Command</div>
+                <div className="text-[10px] text-slate-400 uppercase tracking-widest -mt-2">Central Command</div>
             </motion.div>
 
             {/* Satellite Node 1: AI */}
@@ -532,7 +527,26 @@ export default function ProfilePage() {
     const [currentSlide, setCurrentSlide] = useState(0);
     const [isPrintMode, setIsPrintMode] = useState(false);
     const [isGenerating, setIsGenerating] = useState(false);
+    const [isFullscreen, setIsFullscreen] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const handleFullscreenChange = () => {
+            setIsFullscreen(!!document.fullscreenElement);
+        };
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
+        return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    }, []);
+
+    const toggleFullscreen = () => {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen();
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+        }
+    };
 
     // RAW SLIDES (Unwrapped)
     const rawSlides = [
@@ -678,11 +692,18 @@ export default function ProfilePage() {
             {/* CONTROLS (Hidden during print mode) */}
             {!isPrintMode && (
                 <>
-                    <div className="absolute top-24 right-8 z-50 flex gap-2">
+                    <div className="fixed top-24 right-8 z-[60] flex gap-2">
+                        <button
+                            onClick={toggleFullscreen}
+                            className="bg-slate-800/80 hover:bg-slate-700 p-3 rounded-full text-white border border-white/10 backdrop-blur-md shadow-lg transition-all"
+                            title={isFullscreen ? "Exit Presentation Mode" : "Enter Presentation Mode"}
+                        >
+                            {isFullscreen ? <Minimize className="w-5 h-5" /> : <Maximize className="w-5 h-5" />}
+                        </button>
                         <button
                             onClick={handleDownloadPDF}
                             disabled={isGenerating}
-                            className="bg-white/10 hover:bg-white/20 p-3 rounded-full text-white transition-colors"
+                            className="bg-slate-800/80 hover:bg-slate-700 p-3 rounded-full text-white border border-white/10 backdrop-blur-md shadow-lg transition-all"
                             title="Download Full Deck"
                         >
                             {isGenerating ? <Activity className="w-5 h-5 animate-spin" /> : <Download className="w-5 h-5" />}

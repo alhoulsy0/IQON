@@ -14,9 +14,6 @@ const Footer = () => {
                         <Link href="/" className="inline-block">
                             <Logo />
                         </Link>
-                        <p className="text-gray-500 text-sm leading-relaxed">
-                            Intelligence. Switched On.
-                        </p>
                     </div>
 
                     {/* Column 2: Locations */}
