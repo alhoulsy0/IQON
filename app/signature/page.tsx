@@ -17,12 +17,19 @@ export default function SignaturePage() {
     const router = useRouter();
 
     // --- AUTH CHECK ---
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+
     React.useEffect(() => {
         const token = localStorage.getItem("qertex_admin_token");
         if (!token) {
             router.push("/login?redirect=/signature");
+        } else {
+            setIsAuthenticated(true);
         }
     }, [router]);
+
+    // Prevent rendering until auth is checked
+    if (!isAuthenticated) return null;
 
     const [copied, setCopied] = useState(false);
     const [copiedImage, setCopiedImage] = useState(false);
