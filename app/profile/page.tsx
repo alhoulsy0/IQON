@@ -539,8 +539,10 @@ export default function ProfilePage() {
     }, []);
 
     const toggleFullscreen = () => {
-        if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen();
+        if (!document.fullscreenElement && containerRef.current) {
+            containerRef.current.requestFullscreen().catch(err => {
+                console.error(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+            });
         } else {
             if (document.exitFullscreen) {
                 document.exitFullscreen();
@@ -687,12 +689,12 @@ export default function ProfilePage() {
     };
 
     return (
-        <main className="bg-slate-950 min-h-screen relative text-white overflow-hidden font-sans selection:bg-iqon-red selection:text-white">
+        <main ref={containerRef} className="bg-slate-950 min-h-screen relative text-white overflow-hidden font-sans selection:bg-iqon-red selection:text-white">
 
             {/* CONTROLS (Hidden during print mode) */}
             {!isPrintMode && (
                 <>
-                    <div className="fixed top-24 right-8 z-[60] flex gap-2">
+                    <div className={`fixed right-8 z-[60] flex gap-2 transition-all duration-500 ${isFullscreen ? 'top-6' : 'top-24'}`}>
                         <button
                             onClick={toggleFullscreen}
                             className="bg-slate-800/80 hover:bg-slate-700 p-3 rounded-full text-white border border-white/10 backdrop-blur-md shadow-lg transition-all"
@@ -721,7 +723,7 @@ export default function ProfilePage() {
             )}
 
             {/* VIEWPORT */}
-            <div ref={containerRef} className={`${isPrintMode ? "w-full h-auto bg-slate-900" : "w-full h-screen relative"}`}>
+            <div className={`${isPrintMode ? "w-full h-auto bg-slate-900" : "w-full h-screen relative"}`}>
 
                 {isPrintMode ? (
                     // PRINT MODE: FIXED A4 ASPECT RATIO CONTAINERS

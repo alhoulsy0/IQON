@@ -2,24 +2,25 @@
   <!-- Background Circle (Slate-950) -->
   <circle cx="20" cy="20" r="20" fill="#020617" />
   
-  <!-- Content from QertexLogo -->
-  <g transform="translate(0, 0)">
-    <!-- Shard 1 (Top Left) -->
-    <path d="M14 6L22 10L16 18L10 12L14 6Z" fill="white" fill-opacity="0.8" />
-    <!-- Shard 2 (Top Right) -->
-    <path d="M26 8L32 14L28 22L20 16L26 8Z" fill="white" fill-opacity="0.6" />
-    <!-- Shard 3 (Bottom Left) -->
-    <path d="M8 20L14 26L10 34L4 24L8 20Z" fill="white" fill-opacity="0.7" />
-    <!-- Shard 4 (Bottom Right - The Body) -->
-    <path d="M26 24L30 20L34 28L28 28L26 24Z" fill="white" fill-opacity="0.5" />
-    
-    <!-- The Red Vertex (Singularity Tail) -->
-    <path d="M22 24L34 36L28 22L22 24Z" fill="#E60023" />
-    
-    <!-- The Singularity Point (Center) -->
-    <circle cx="20" cy="20" r="2" fill="white" />
-    
-    <!-- Orbit Rings (Optional visual flair) -->
-    <circle cx="20" cy="20" r="16" stroke="white" stroke-width="0.5" stroke-opacity="0.2" stroke-dasharray="4 4" />
+  <!-- Red Glow -->
+  <circle cx="20" cy="20" r="12" fill="#DC2626" fill-opacity="0.4" filter="blur(4px)" />
+
+  <!-- Qertex Star (Gemini Spark) - Scaled and Centered -->
+  <!-- Original Path (24x24): M12 0 C12 0 14 8 22 12 C 14 16 12 24 12 24 C 12 24 10 16 2 12 C 10 8 12 0 12 0 Z -->
+  <!-- Translate (8, 8) to center in 40x40 -->
+  <g transform="translate(8, 8)">
+      <defs>
+          <linearGradient id="icon-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#f8fafc" /> <!-- White -->
+              <stop offset="50%" stop-color="#DC2626" /> <!-- Red -->
+              <stop offset="100%" stop-color="#475569" /> <!-- Slate -->
+          </linearGradient>
+      </defs>
+      <path
+          d="M12 0 C12 0 14 8 22 12 C 14 16 12 24 12 24 C 12 24 10 16 2 12 C 10 8 12 0 12 0 Z"
+          fill="url(#icon-grad)"
+          stroke="#475569"
+          stroke-width="0.5"
+      />
   </g>
 </svg>

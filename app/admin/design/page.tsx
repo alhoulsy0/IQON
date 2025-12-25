@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef } from "react";
-import { Download, FileText, Check, Loader2, Image as ImageIcon, FileType, Presentation } from "lucide-react";
+import { Download, FileText, Check, Loader2, Image as ImageIcon, FileType, Presentation, Share2, LayoutTemplate } from "lucide-react";
 import { toPng, toSvg } from "html-to-image";
 import { Document, Packer, Paragraph, TextRun, ImageRun, Header, Footer, AlignmentType, BorderStyle } from "docx";
 import { saveAs } from "file-saver";
@@ -22,6 +22,8 @@ export default function DesignSystemPage() {
     const [generating, setGenerating] = useState<string | null>(null);
     const logoRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
     const lightLogoRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+    const socialLogoRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+    const bannerLogoRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
     // --- LOGO DOWNLOAD ---
     const handleDownloadLogo = async (variant: BrandVariant, format: "PNG" | "SVG") => {
@@ -62,49 +64,63 @@ export default function DesignSystemPage() {
     };
 
     // --- DOCX GENERATION ---
+    // --- DOCX GENERATION (PREMIUM) ---
     const handleGenerateDoc = async (variant: BrandVariant) => {
         setGenerating(`${variant}-DOC`);
-        // Use Light Mode Ref for Documents (Dark text on White paper)
         const ref = lightLogoRefs.current[variant];
         if (!ref) return;
 
         try {
-            // 1. Capture Logo as Buffer for Header
             const logoDataUrl = await toPng(ref, { pixelRatio: 4, backgroundColor: 'transparent' });
-            // Convert DataURL to ArrayBuffer
             const response = await fetch(logoDataUrl);
             const blob = await response.blob();
             const arrayBuffer = await blob.arrayBuffer();
 
-            // 2. Define Styles based on Variant
-            // (Simulated mapping since docx handles fonts differently, we stick to standard fonts)
             const accentColor = variant === "BRAND" ? "DC2626" : variant === "AI" ? "E60023" : variant === "QA" ? "2DD4BF" : "0EA5E9";
 
-            // 3. Create Document
             const doc = new Document({
+                styles: {
+                    default: {
+                        heading1: {
+                            run: { font: "Calibri", size: 56, bold: true, color: "1e293b" },
+                            paragraph: { spacing: { before: 240, after: 120 } },
+                        },
+                        heading2: {
+                            run: { font: "Calibri", size: 36, bold: true, color: accentColor, smallCaps: true },
+                            paragraph: { spacing: { before: 240, after: 120 } },
+                        },
+                        document: {
+                            run: { font: "Calibri", size: 22, color: "334155" },
+                            paragraph: { spacing: { line: 276 } }, // 1.15 spacing
+                        },
+                    },
+                },
                 sections: [{
-                    properties: {},
+                    properties: {
+                        page: {
+                            margin: { top: 800, right: 1440, bottom: 800, left: 1440 }, // 1 inch margins horizontal
+                        }
+                    },
                     headers: {
                         default: new Header({
                             children: [
+                                // Top Color Band
+                                new Paragraph({
+                                    border: { top: { style: BorderStyle.SINGLE, size: 48, space: 0, color: accentColor } }, // Thick top border
+                                    spacing: { after: 400 },
+                                    children: [],
+                                }),
+                                // Logo & Address Table
                                 new Paragraph({
                                     children: [
                                         new ImageRun({
                                             data: arrayBuffer,
-                                            transformation: { width: 150, height: 45 },
-                                            type: "png", // Explicitly state type
+                                            transformation: { width: 180, height: 50 },
+                                            type: "png",
                                         }),
                                     ],
-                                    alignment: AlignmentType.RIGHT, // Logo top-right standard corporate
+                                    alignment: AlignmentType.RIGHT,
                                 }),
-                                // Accent Line
-                                new Paragraph({
-                                    text: "",
-                                    border: {
-                                        bottom: { color: accentColor, space: 10, style: BorderStyle.SINGLE, size: 12 }
-                                    },
-                                    spacing: { after: 200 }
-                                })
                             ],
                         }),
                     },
@@ -113,26 +129,16 @@ export default function DesignSystemPage() {
                             children: [
                                 new Paragraph({
                                     children: [
-                                        new TextRun({
-                                            text: "Qertex Global Intelligence | www.qertex.com | info@qertex.com",
-                                            size: 16, // 8pt
-                                            color: "64748b"
-                                        })
+                                        new TextRun({ text: "Qertex Global Intelligence", bold: true, color: "cbd5e1" }),
+                                        new TextRun({ text: "  |  London • Riyadh • Singapore • New York", color: "64748b" }),
                                     ],
                                     alignment: AlignmentType.CENTER,
-                                    border: {
-                                        top: { color: "e2e8f0", space: 10, style: BorderStyle.SINGLE, size: 6 }
-                                    },
-                                    spacing: { before: 200 }
+                                    spacing: { before: 300, after: 100 },
+                                    border: { top: { style: BorderStyle.SINGLE, size: 6, space: 10, color: "334155" } },
                                 }),
                                 new Paragraph({
                                     children: [
-                                        new TextRun({
-                                            text: "Confidential & Proprietary. 2025 All Rights Reserved.",
-                                            size: 14,
-                                            color: "94a3b8",
-                                            italics: true
-                                        })
+                                        new TextRun({ text: "CONFIDENTIAL // OFFICIAL MEMORANDUM // " + new Date().getFullYear(), size: 16, color: accentColor }),
                                     ],
                                     alignment: AlignmentType.CENTER,
                                 }),
@@ -140,74 +146,67 @@ export default function DesignSystemPage() {
                         }),
                     },
                     children: [
-                        // Date
+                        // Date formatted
                         new Paragraph({
-                            children: [new TextRun({ text: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }), size: 22 })],
+                            children: [new TextRun({ text: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }).toUpperCase(), size: 20, color: "94a3b8" })],
                             spacing: { after: 400 },
                         }),
 
                         // Title
                         new Paragraph({
-                            children: [
-                                new TextRun({
-                                    text: "OFFICIAL STRATEGIC MEMORANDUM",
-                                    bold: true,
-                                    size: 28,
-                                    color: "0f172a"
-                                }),
-                            ],
-                            spacing: { after: 300 },
+                            text: "STRATEGIC DIRECTIVE",
+                            heading: "Heading1",
                         }),
+
+                        // Subtitle with Accent Color
+                        new Paragraph({
+                            text: "OPERATIONAL MEMORANDUM :: DIVISION " + variant,
+                            heading: "Heading2",
+                        }),
+
+                        new Paragraph({
+                            children: [new TextRun({ text: "", size: 10 })], // Spacer
+                            border: { bottom: { style: BorderStyle.SINGLE, size: 6, color: "e2e8f0" } },
+                            spacing: { after: 400 },
+                        }),
+
 
                         // Body Text
                         new Paragraph({
                             children: [
-                                new TextRun({
-                                    text: "Dear Stakeholder,",
-                                    size: 24,
-                                }),
+                                new TextRun({ text: "EXECUTIVE SUMMARY", bold: true, color: "0f172a" }),
                             ],
-                            spacing: { after: 200 },
+                            spacing: { after: 120 },
                         }),
                         new Paragraph({
-                            children: [
-                                new TextRun({
-                                    text: "This document serves as a placeholder for official Qertex communications. The header confirms the specific operational division issuing this directive.",
-                                    size: 24,
-                                }),
-                            ],
-                            spacing: { after: 200 },
+                            text: "This document outlines critical strategic initiatives for Q2 2025. It serves as a binding directive for all relevant stakeholders within the Qertex ecosystem. Please review the attached protocols regarding Data Sovereignty and Autonomous Compliance.",
                         }),
+                        new Paragraph({ text: "" }), // spacing
                         new Paragraph({
-                            children: [
-                                new TextRun({
-                                    text: "As a leader in Digital Sovereignty and High-Assurance Engineering, we adhere to strict documentation standards. This template ensures brand consistency across all external deliverables.",
-                                    size: 24,
-                                }),
-                            ],
-                            spacing: { after: 400 },
+                            text: "Our commitment to high-assurance engineering remains paramount. As we expand our 'Aurora' agentic capabilities, strict adherence to the TMMi Level 5 framework is mandatory.",
                         }),
 
+                        new Paragraph({ text: "" }), // spacing
                         // Signoff
                         new Paragraph({
-                            children: [new TextRun({ text: "Sincerely,", size: 24 })],
-                            spacing: { after: 600 },
-                        }),
-
-                        new Paragraph({
-                            children: [new TextRun({ text: "The Qertex Team", bold: true, size: 24 })],
+                            children: [
+                                new TextRun({ text: "Authorized By:", size: 20, color: "94a3b8" }),
+                            ],
+                            spacing: { before: 600, after: 100 },
                         }),
                         new Paragraph({
-                            children: [new TextRun({ text: "Office of the CTO", size: 20, color: "64748b" })],
+                            children: [new TextRun({ text: "Office of the CTO", bold: true, size: 24, color: "0f172a" })],
+                            spacing: { after: 0 },
+                        }),
+                        new Paragraph({
+                            children: [new TextRun({ text: "Qertex Global Intelligence", size: 20, color: accentColor })],
                         }),
                     ],
                 }],
             });
 
-            // 4. Export
             const buffer = await Packer.toBlob(doc);
-            saveAs(buffer, `Qertex_Letterhead_${variant}.docx`);
-
+            saveAs(buffer, `Qertex_Official_${variant}.docx`);
         } catch (err) {
             console.error("Doc Gen Failed", err);
             alert("Failed to generate document.");
@@ -217,68 +216,122 @@ export default function DesignSystemPage() {
     };
 
 
-    // --- PPTX GENERATION ---
+    // --- PPTX GENERATION (AVANT-GARDE) ---
     const handleGeneratePPTX = async (variant: BrandVariant) => {
         setGenerating(`${variant}-PPTX`);
-        const ref = logoRefs.current[variant]; // Use Dark Mode Logo (White Text) for PPT (Dark BG)
+        const ref = logoRefs.current[variant];
         if (!ref) return;
 
         try {
-            // 1. Capture Logo
             const logoDataUrl = await toPng(ref, { pixelRatio: 4, backgroundColor: 'transparent' });
-
-            // 2. Initialize PPTX
             const pres = new pptxgen();
 
-            // Set Metadata
-            pres.author = 'Qertex Global Intelligence';
+            pres.author = 'Qertex Global';
             pres.company = 'Qertex';
-            pres.subject = 'Corporate Presentation';
-            pres.title = 'Qertex Master Deck';
+            pres.title = 'Qertex Master Deck 2025';
 
-            // Define Colors
             const accentColor = variant === "BRAND" ? "DC2626" : variant === "AI" ? "E60023" : variant === "QA" ? "2DD4BF" : "0EA5E9";
 
-            // 3. Define Master Slide (Theme)
+            // --- MASTER LAYOUT (Dark Aesthetic) ---
             pres.defineSlideMaster({
                 title: 'MASTER_DARK',
-                background: { color: "020617" }, // Slate-950
-                slideNumber: { x: "95%", y: "92%", w: 1, fontSize: 8, color: "64748b", fontFace: "Courier New" },
+                background: { color: "020617" },
+                slideNumber: { x: "95%", y: "94%", w: 0.5, fontSize: 9, color: "DC2626", fontFace: "Courier New", bold: true },
                 objects: [
-                    // Grid Bg (Optional, simplistic version)
-                    // Logo Top Left
+                    // Dynamic Corner Shape (The "Shard")
+                    { rect: { x: "85%", y: -0.5, w: 4, h: 4, rotate: 45, fill: { color: accentColor }, line: { color: "FFFFFF", width: 2 } } },
+
+                    // Grid Elements (Subtle Tech Lines)
+                    { rect: { x: 0.5, y: 0.5, w: "90%", h: 0.01, fill: { color: "1e293b" } } }, // Top Line
+                    { rect: { x: 0.5, y: "90%", w: "90%", h: 0.01, fill: { color: "1e293b" } } }, // Bottom Line
+
+                    // Logo (Top Left)
                     { image: { data: logoDataUrl, x: 0.5, y: 0.4, w: 1.5, h: 0.45 } },
-                    // Confidential Footer Left
-                    { text: { text: "CONFIDENTIAL // 2025", options: { x: 0.5, y: "92%", w: 3, fontSize: 8, color: "64748b", fontFace: "Courier New" } } },
-                    // Web Footer Right
-                    { text: { text: "www.qertex.com", options: { x: "85%", y: "92%", w: 2, fontSize: 8, color: "475569", align: "right", fontFace: "Courier New" } } },
-                    // Accent Line Top
-                    { rect: { x: 0, y: 0, w: "100%", h: 0.05, fill: { color: accentColor } } }
+
+                    // Footer Info
+                    { text: { text: "CONFIDENTIAL // STRATEGY 2025", options: { x: 0.5, y: "94%", w: 5, fontSize: 9, color: "475569", fontFace: "Courier New" } } },
+                    { text: { text: "SLIDE", options: { x: "90%", y: "94%", w: 1, fontSize: 9, color: "64748b", fontFace: "Courier New", align: "right" } } },
                 ]
             });
 
-            // 4. Slide 1: Title Slide
+            // --- TITLE SLIDE ---
             const slide1 = pres.addSlide({ masterName: 'MASTER_DARK' });
-            slide1.addText(variant === "BRAND" ? "The Company" : variant, { x: 0.5, y: 3.5, fontSize: 44, color: "FFFFFF", bold: true, fontFace: "Arial" });
-            slide1.addText("Origins & Vision", { x: 0.5, y: 4.2, fontSize: 14, color: accentColor, fontFace: "Courier New" }); // Subtitle
+            // Big Hero Text
+            slide1.addText(variant === "BRAND" ? "THE FUTURE\nIS SOVEREIGN." : variant, {
+                x: 0.5, y: 2.5, w: 9, h: 3,
+                fontSize: 60, color: "FFFFFF", bold: true, fontFace: "Arial Black",
+                shadow: { type: "outer", color: accentColor, blur: 20, offset: 0, opacity: 0.4 }
+            });
 
-            // 5. Slide 2: Content Slide
+            slide1.addText("QERTEX GLOBAL INTELLIGENCE", { x: 0.5, y: 2.2, fontSize: 14, color: accentColor, fontFace: "Courier New" });
+
+            // --- AGENDA SLIDE ---
             const slide2 = pres.addSlide({ masterName: 'MASTER_DARK' });
-            slide2.addText("Strategic Overview", { x: 0.5, y: 1.0, fontSize: 24, color: "FFFFFF", bold: true });
+            slide2.addText("STRATEGIC AGENDA", { x: 0.5, y: 1.0, fontSize: 32, color: "FFFFFF", bold: true, fontFace: "Arial" });
 
-            slide2.addText([
-                { text: "Core Objectives", options: { fontSize: 18, color: accentColor, bold: true, breakLine: true } },
-                { text: "   • Digital Sovereignty First", options: { fontSize: 14, color: "94a3b8", breakLine: true } },
-                { text: "   • High-Assurance Engineering", options: { fontSize: 14, color: "94a3b8", breakLine: true } },
-                { text: "   • Autonomous AI Deployment", options: { fontSize: 14, color: "94a3b8" } }
-            ], { x: 0.5, y: 2.0, w: 9, h: 4 });
+            // Styled Items
+            const items = ["Digital Sovereignty", "Autonomous Compliance", "High-Assurance AI", "Global Operations"];
+            items.forEach((item, i) => {
+                // Bullet
+                slide2.addShape(pres.ShapeType.rect, { x: 0.5, y: 2.0 + (i * 0.8), w: 0.15, h: 0.15, fill: { color: accentColor } });
+                // Text
+                slide2.addText(item, { x: 0.8, y: 1.9 + (i * 0.8), fontSize: 20, color: "e2e8f0", bold: true });
+                // Subtext
+                slide2.addText("Restricted Access // Level 5 Clearance", { x: 0.8, y: 2.25 + (i * 0.8), fontSize: 12, color: "64748b" });
+            });
 
-            // 6. Export
+
             await pres.writeFile({ fileName: `Qertex_Deck_${variant}.pptx` });
 
         } catch (err) {
             console.error("PPT Gen Failed", err);
             alert("Failed to generate presentation.");
+        } finally {
+            setGenerating(null);
+        }
+    };
+
+
+    // --- SOCIAL MEDIA IMAGE GENERATION ---
+    const handleDownloadSocial = async (variant: BrandVariant) => {
+        setGenerating(`${variant}-SOCIAL`);
+        const ref = socialLogoRefs.current[variant]; // Use the dedicated HD container
+        if (!ref) return;
+
+        try {
+            const dataUrl = await toPng(ref, {
+                pixelRatio: 1, // Already 1080px native, no need to upscale further
+                // backgroundColor is handled by the container div itself
+            });
+
+            const link = document.createElement('a');
+            link.download = `qertex-${variant.toLowerCase()}-social.png`;
+            link.href = dataUrl;
+            link.click();
+        } catch (err) {
+            console.error("Social Gen Failed", err);
+            alert("Failed to generate social image.");
+        } finally {
+            setGenerating(null);
+        }
+    };
+
+
+    // --- BANNER GENERATION ---
+    const handleDownloadBanner = async (variant: BrandVariant) => {
+        setGenerating(`${variant}-BANNER`);
+        const ref = bannerLogoRefs.current[variant];
+        if (!ref) return;
+
+        try {
+            const dataUrl = await toPng(ref, { pixelRatio: 1 });
+            const link = document.createElement('a');
+            link.download = `qertex-${variant.toLowerCase()}-banner.png`;
+            link.href = dataUrl;
+            link.click();
+        } catch (err) {
+            console.error("Banner Gen Failed", err);
+            alert("Failed to generate banner.");
         } finally {
             setGenerating(null);
         }
@@ -361,6 +414,24 @@ export default function DesignSystemPage() {
                                         {generating === `${variant.id}-SVG` ? <Loader2 className="w-3 h-3 animate-spin" /> : <FileType className="w-3 h-3" />}
                                         Download SVG
                                     </button>
+                                    <div className="grid grid-cols-2 gap-2 mt-1">
+                                        <button
+                                            onClick={() => handleDownloadSocial(variant.id)}
+                                            disabled={!!generating}
+                                            className="flex items-center justify-center gap-2 bg-violet-600/20 hover:bg-violet-600/30 border border-violet-500/30 text-violet-200 py-2 rounded-lg text-xs font-medium transition-colors col-span-1"
+                                        >
+                                            {generating === `${variant.id}-SOCIAL` ? <Loader2 className="w-3 h-3 animate-spin" /> : <Share2 className="w-3 h-3" />}
+                                            Social (Square)
+                                        </button>
+                                        <button
+                                            onClick={() => handleDownloadBanner(variant.id)}
+                                            disabled={!!generating}
+                                            className="flex items-center justify-center gap-2 bg-pink-600/20 hover:bg-pink-600/30 border border-pink-500/30 text-pink-200 py-2 rounded-lg text-xs font-medium transition-colors col-span-1"
+                                        >
+                                            {generating === `${variant.id}-BANNER` ? <Loader2 className="w-3 h-3 animate-spin" /> : <LayoutTemplate className="w-3 h-3" />}
+                                            Banner (Cover)
+                                        </button>
+                                    </div>
                                 </div>
 
                                 {/* Doc Gen */}
@@ -393,7 +464,46 @@ export default function DesignSystemPage() {
             <div className="fixed top-[-9999px] left-[-9999px] pointer-events-none opacity-0">
                 {BRAND_VARIANTS.map((variant) => (
                     <div key={variant.id} ref={(el) => { lightLogoRefs.current[variant.id] = el; }} className="p-4 inline-block">
-                        <Logo forceMode={variant.id} lightMode={true} />
+                        <Logo forceMode={variant.id} lightMode={true} isStatic={true} />
+                    </div>
+                ))}
+            </div>
+
+            {/* Hidden HD Social Media Capture Area (Off-screen) */}
+            <div className="fixed top-[-15000px] left-[-15000px] pointer-events-none opacity-0">
+                {BRAND_VARIANTS.map((variant) => (
+                    // 1080x1080 Social Square Canvas
+                    <div
+                        key={variant.id}
+                        ref={(el) => { socialLogoRefs.current[variant.id] = el; }}
+                        className="w-[1080px] h-[1080px] bg-[#020617] flex items-center justify-center"
+                    >
+                        {/* Scale up the vector logo to fill the canvas */}
+                        <div className="scale-[5] transform origin-center">
+                            <Logo forceMode={variant.id} isStatic={true} />
+                        </div>
+                    </div>
+                ))}
+            </div>
+            {/* Hidden Banner Capture Area (Off-screen) */}
+            <div className="fixed top-[-20000px] left-[-20000px] pointer-events-none opacity-0">
+                {BRAND_VARIANTS.map((variant) => (
+                    // 1500x500 Banner Canvas
+                    <div
+                        key={variant.id}
+                        ref={(el) => { bannerLogoRefs.current[variant.id] = el; }}
+                        className="w-[1500px] h-[500px] bg-[#020617] relative flex items-center justify-center overflow-hidden"
+                    >
+                        {/* Creative Background Elements */}
+                        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-20" />
+                        {/* Glow Blob */}
+                        {/* Glow Blob */}
+                        <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-${variant.id === 'BRAND' ? 'red-600' : variant.id === 'AI' ? 'red-600' : variant.id === 'QA' ? 'teal-400' : 'blue-600'}/20 blur-[100px] rounded-full`} />
+
+                        {/* Content */}
+                        <div className="scale-[3] transform origin-center relative z-10">
+                            <Logo forceMode={variant.id} isStatic={true} />
+                        </div>
                     </div>
                 ))}
             </div>
