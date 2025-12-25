@@ -7,11 +7,9 @@ import { Logo } from "@/components/Logo";
 import { Sora } from "next/font/google";
 import { motion } from "framer-motion";
 import { toBlob, toPng } from "html-to-image";
-const GIFEncoder = require('gif-encoder-2');
+import { useRouter } from "next/navigation";
 
 const sora = Sora({ subsets: ["latin"], weight: ["400", "500", "600", "700"] });
-
-import { useRouter } from "next/navigation";
 
 export default function SignaturePage() {
     const router = useRouter();
@@ -183,6 +181,11 @@ export default function SignaturePage() {
         setIsGifRecording(true);
 
         try {
+            // Dynamic Import to avoid SSR/Initial Load Crashing
+            // @ts-ignore
+            const GIFEncoderModule = (await import('gif-encoder-2'));
+            const GIFEncoder = GIFEncoderModule.default || GIFEncoderModule;
+
             // Setup GIF Encoder
             const width = signatureRef.current.offsetWidth * 2;
             const height = signatureRef.current.offsetHeight * 2;
