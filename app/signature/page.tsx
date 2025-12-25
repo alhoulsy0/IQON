@@ -11,27 +11,7 @@ import { useRouter } from "next/navigation";
 const sora = Sora({ subsets: ["latin"], weight: ["400", "500", "600", "700"] });
 
 export default function SignaturePage() {
-    const router = useRouter();
-
-    // --- AUTH CHECK ---
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-    React.useEffect(() => {
-        try {
-            const token = localStorage.getItem("qertex_admin_token");
-            if (!token) {
-                router.push("/login?redirect=/signature");
-            } else {
-                setIsAuthenticated(true);
-            }
-        } catch (e) {
-            console.error("Auth check failed", e);
-            router.push("/login");
-        }
-    }, [router]);
-
-    // Prevent rendering until auth is checked
-    if (!isAuthenticated) return null;
+    // --- AUTH REMOVED AS REQUESTED ---
 
     const [copied, setCopied] = useState(false);
     const [copiedImage, setCopiedImage] = useState(false);
@@ -335,8 +315,7 @@ export default function SignaturePage() {
                                         {/* Use Logo Component scaled down for icon preview */}
                                         <div className="w-8 h-8 mb-2 flex items-center justify-center overflow-hidden">
                                             <div className="scale-75">
-                                                {/* <Logo forceMode={variant as any} /> */}
-                                                <div className="bg-white/10 w-full h-full rounded-full animate-pulse" />
+                                                <Logo forceMode={variant as any} />
                                             </div>
                                         </div>
                                         <span className="text-[10px] font-bold">{variant}</span>
@@ -412,8 +391,7 @@ export default function SignaturePage() {
                                                     {/* Background Glow Effect */}
                                                     <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 pointer-events-none" />
                                                     <div className="relative z-10">
-                                                        {/* <Logo forceMode={logoVariant} /> */}
-                                                        <div className="text-white text-xs font-bold p-2">QERTEX</div>
+                                                        <Logo forceMode={logoVariant} />
                                                     </div>
                                                 </div>
                                             </td>
