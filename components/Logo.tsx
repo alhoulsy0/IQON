@@ -52,12 +52,7 @@ export const Logo = ({ forceMode, lightMode = false, isStatic = false }: { force
 
     return (
         <div className="flex items-center gap-2 group cursor-pointer">
-            <style jsx global>{`
-                @keyframes textShine {
-                    0% { background-position: 200% center; }
-                    100% { background-position: -200% center; }
-                }
-            `}</style>
+
 
             {/* ICON CONTAINER */}
             <div className={`w-14 h-14 ${lightMode ? 'brightness-75 contrast-125' : ''}`}>
