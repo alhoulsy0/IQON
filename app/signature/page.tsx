@@ -335,7 +335,8 @@ export default function SignaturePage() {
                                         {/* Use Logo Component scaled down for icon preview */}
                                         <div className="w-8 h-8 mb-2 flex items-center justify-center overflow-hidden">
                                             <div className="scale-75">
-                                                <Logo forceMode={variant as any} />
+                                                {/* <Logo forceMode={variant as any} /> */}
+                                                <div className="bg-white/10 w-full h-full rounded-full animate-pulse" />
                                             </div>
                                         </div>
                                         <span className="text-[10px] font-bold">{variant}</span>
@@ -411,7 +412,8 @@ export default function SignaturePage() {
                                                     {/* Background Glow Effect */}
                                                     <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 pointer-events-none" />
                                                     <div className="relative z-10">
-                                                        <Logo forceMode={logoVariant} />
+                                                        {/* <Logo forceMode={logoVariant} /> */}
+                                                        <div className="text-white text-xs font-bold p-2">QERTEX</div>
                                                     </div>
                                                 </div>
                                             </td>
