@@ -126,38 +126,48 @@ const Navbar = () => {
                         <div className="px-4 py-6 space-y-4">
                             <div className="space-y-2">
                                 <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">Services</span>
-                                <Link href="/services/staffing" className="block text-lg font-medium text-gray-300 hover:text-white">
-                                    Technical Staffing
+                                <Link onClick={() => setIsMobileMenuOpen(false)} href="/services/assurance" className="block text-lg font-medium text-gray-300 hover:text-white">
+                                    Software Quality
                                 </Link>
-                                <Link href="/services/ai" className="block text-lg font-medium text-gray-300 hover:text-white">
-                                    AI & Cyber
+                                <Link onClick={() => setIsMobileMenuOpen(false)} href="/services/ai" className="block text-lg font-medium text-gray-300 hover:text-white">
+                                    AI Technology
+                                </Link>
+                                <Link onClick={() => setIsMobileMenuOpen(false)} href="/services/cyber" className="block text-lg font-medium text-gray-300 hover:text-white">
+                                    Cybersecurity
+                                </Link>
+                                <Link onClick={() => setIsMobileMenuOpen(false)} href="/services/academy" className="block text-lg font-medium text-gray-300 hover:text-white">
+                                    Qertex Academy
+                                </Link>
+                                <Link onClick={() => setIsMobileMenuOpen(false)} href="/services/staffing" className="block text-lg font-medium text-gray-300 hover:text-white">
+                                    Technical Staffing
                                 </Link>
                             </div>
 
                             <div className="space-y-2 pt-4 border-t border-white/5">
                                 <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">Products</span>
-                                <Link href="/products/aurora" className="block text-lg font-medium text-gray-300 hover:text-white">
+                                <Link onClick={() => setIsMobileMenuOpen(false)} href="/products/aurora" className="block text-lg font-medium text-gray-300 hover:text-white">
                                     AURORA™ Platform
                                 </Link>
-                                <Link href="/products/risk-lens" className="block text-lg font-medium text-gray-300 hover:text-white">
+                                <Link onClick={() => setIsMobileMenuOpen(false)} href="/products/risk-lens" className="block text-lg font-medium text-gray-300 hover:text-white">
                                     Qertex Assessment™
                                 </Link>
                             </div>
 
                             <div className="space-y-2 pt-4 border-t border-white/5">
-                                <Link href="/projects" className="block text-lg font-medium text-gray-300 hover:text-white">
+                                <Link onClick={() => setIsMobileMenuOpen(false)} href="/projects" className="block text-lg font-medium text-gray-300 hover:text-white">
                                     Projects
                                 </Link>
-                                <Link href="/profile" className="block text-lg font-medium text-gray-300 hover:text-white">
+                                <Link onClick={() => setIsMobileMenuOpen(false)} href="/profile" className="block text-lg font-medium text-gray-300 hover:text-white">
                                     Company Profile
                                 </Link>
-                                <Link href="/about" className="block text-lg font-medium text-gray-300 hover:text-white">
+                                <Link onClick={() => setIsMobileMenuOpen(false)} href="/about" className="block text-lg font-medium text-gray-300 hover:text-white">
                                     About
                                 </Link>
                             </div>
 
                             <div className="pt-6">
                                 <Link
+                                    onClick={() => setIsMobileMenuOpen(false)}
                                     href="/contact"
                                     className="flex items-center justify-center w-full px-6 py-3 bg-iqon-red text-white font-bold rounded-lg hover:bg-red-700 transition-colors"
                                 >

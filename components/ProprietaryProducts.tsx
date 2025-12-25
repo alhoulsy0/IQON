@@ -15,7 +15,13 @@ const FaheemCard = () => {
 
                 <div className="relative z-10">
                     <h3 className="text-3xl font-bold text-white mb-2">AURORA<span className="text-sm align-top">TM</span></h3>
-                    <p className="text-gray-400 mb-8">The Faheem AI Engine</p>
+                    <p className="text-gray-400 mb-6">The Faheem AI Engine</p>
+
+                    {/* --- SAIP BADGE (Card Version) --- */}
+                    <div className="mb-8 inline-flex items-center gap-3 bg-emerald-900/10 border border-emerald-500/20 rounded-lg px-3 py-1.5 backdrop-blur-sm">
+                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-[pulse_2s_infinite]" />
+                        <span className="text-[10px] uppercase font-bold text-emerald-400 tracking-wider">SAIP Certified</span>
+                    </div>
 
                     {/* Code Lines Animation */}
                     <div className="bg-slate-950/50 rounded-xl p-4 font-mono text-xs border border-white/5 h-32 relative overflow-hidden">
@@ -146,10 +152,12 @@ const ProprietaryProducts = () => {
                     <div className="w-24 h-1 bg-iqon-red mx-auto rounded-full" />
                 </motion.div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-20">
                     <FaheemCard />
                     <AssessmentToolCard />
                 </div>
+
+
             </div>
         </section>
     );

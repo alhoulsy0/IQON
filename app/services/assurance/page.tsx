@@ -24,6 +24,66 @@ export default function AssuranceServicesPage() {
                 </motion.div>
             </section>
 
+            {/* --- ELITE CERTIFICATION STANDARD --- */}
+            <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
+                <div className="relative rounded-2xl overflow-hidden bg-gradient-to-r from-slate-900 to-slate-950 border border-white/10 p-8 md:p-12">
+                    {/* Background Effects */}
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/10 rounded-full blur-[100px] pointer-events-none" />
+                    <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-600/10 rounded-full blur-[100px] pointer-events-none" />
+
+                    <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-12">
+                        {/* Text Content */}
+                        <div className="max-w-xl">
+                            <h2 className="text-sm font-bold text-iqon-red uppercase tracking-widest mb-3">Engineering Caliber</h2>
+                            <h3 className="text-3xl md:text-4xl font-bold text-white mb-6">
+                                Certified Excellence. <br />
+                                <span className="text-slate-400">Without Exception.</span>
+                            </h3>
+                            <p className="text-lg text-slate-300 leading-relaxed mb-6">
+                                We believe quality cannot be improvised—it must be engineered by qualified experts. That is why we maintain an uncompromising standard for our workforce.
+                            </p>
+                            <div className="flex flex-col gap-2">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-1.5 h-1.5 rounded-full bg-green-500 shadow-[0_0_10px_#22c55e]" />
+                                    <span className="text-white font-medium">100% of personnel are <strong className="text-green-400">ISTQB Certified</strong></span>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                    <div className="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-[0_0_10px_#3b82f6]" />
+                                    <span className="text-white font-medium">100% of personnel are <strong className="text-blue-400">TMMi Professionals</strong></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Visual Badges */}
+                        <div className="flex flex-wrap gap-6 items-center justify-center">
+                            {/* ISTQB Badge */}
+                            <motion.div
+                                whileHover={{ scale: 1.05 }}
+                                className="w-40 h-40 rounded-xl bg-slate-800/50 border border-white/10 flex flex-col items-center justify-center text-center p-4 backdrop-blur-md shadow-xl group hover:border-green-500/30 transition-all"
+                            >
+                                <div className="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center text-green-400 font-bold text-xl mb-3 group-hover:bg-green-500 group-hover:text-white transition-colors">
+                                    Q
+                                </div>
+                                <div className="text-2xl font-black text-white mb-1">100%</div>
+                                <div className="text-[10px] text-slate-400 uppercase tracking-wider font-bold">ISTQB Certified</div>
+                            </motion.div>
+
+                            {/* TMMi Badge */}
+                            <motion.div
+                                whileHover={{ scale: 1.05 }}
+                                className="w-40 h-40 rounded-xl bg-slate-800/50 border border-white/10 flex flex-col items-center justify-center text-center p-4 backdrop-blur-md shadow-xl group hover:border-blue-500/30 transition-all"
+                            >
+                                <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center text-blue-400 font-bold text-xl mb-3 group-hover:bg-blue-500 group-hover:text-white transition-colors">
+                                    T
+                                </div>
+                                <div className="text-2xl font-black text-white mb-1">100%</div>
+                                <div className="text-[10px] text-slate-400 uppercase tracking-wider font-bold">TMMi Professional</div>
+                            </motion.div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             {/* Capabilities Grid */}
             <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 

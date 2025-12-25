@@ -91,9 +91,40 @@ export default function AuroraPage() {
                             AURORA™ <br />
                             <span className="text-slate-500">Platform</span>
                         </h1>
-                        <p className="text-xl text-gray-400 mb-12 leading-relaxed">
+                        <p className="text-xl text-gray-400 mb-8 leading-relaxed">
                             Accelerate your QA cycles with Faheem AI. From requirement analysis to automated test execution, Aurora handles the heavy lifting.
                         </p>
+
+                        {/* --- SAIP CERTIFICATION BADGE --- */}
+                        <div className="mb-12 inline-block">
+                            <motion.div
+                                whileHover={{ scale: 1.02 }}
+                                className="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-900/40 to-slate-900/40 border border-emerald-500/30 backdrop-blur-xl p-4 pr-6 flex items-center gap-4 shadow-[0_0_20px_rgba(16,185,129,0.1)] transition-all hover:shadow-[0_0_30px_rgba(16,185,129,0.2)] hover:border-emerald-500/50"
+                            >
+                                {/* Shine Effect */}
+                                <div className="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/10 to-transparent z-0" />
+
+                                <div className="relative z-10 w-12 h-12 rounded-full bg-gradient-to-br from-emerald-500 to-teal-700 flex items-center justify-center shadow-lg">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                                        <path d="m9 12 2 2 4-4" />
+                                    </svg>
+                                </div>
+                                <div className="relative z-10">
+                                    <div className="text-[10px] uppercase font-bold text-emerald-400 tracking-widest mb-0.5">Certified & Registered</div>
+                                    <div className="text-sm font-bold text-white leading-tight">Saudi Authority for<br />Intellectual Property</div>
+                                </div>
+
+                                <div className="absolute right-0 top-0 p-2 opacity-20">
+                                    {/* Abstract Pattern */}
+                                    <div className="flex gap-1">
+                                        <div className="w-1 h-3 bg-emerald-500 rounded-full" />
+                                        <div className="w-1 h-5 bg-emerald-500 rounded-full" />
+                                        <div className="w-1 h-2 bg-emerald-500 rounded-full" />
+                                    </div>
+                                </div>
+                            </motion.div>
+                        </div>
 
                         <div className="space-y-8 mb-12">
                             {features.map((feature, index) => (
