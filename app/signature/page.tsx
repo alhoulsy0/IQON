@@ -6,7 +6,6 @@ import { ArrowLeft, Copy, Download, Check, RefreshCw, Image as ImageIcon, Video 
 import { Logo } from "@/components/Logo";
 import { Sora } from "next/font/google";
 import { motion } from "framer-motion";
-import { toBlob, toPng } from "html-to-image";
 import { useRouter } from "next/navigation";
 
 const sora = Sora({ subsets: ["latin"], weight: ["400", "500", "600", "700"] });
@@ -18,11 +17,16 @@ export default function SignaturePage() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     React.useEffect(() => {
-        const token = localStorage.getItem("qertex_admin_token");
-        if (!token) {
-            router.push("/login?redirect=/signature");
-        } else {
-            setIsAuthenticated(true);
+        try {
+            const token = localStorage.getItem("qertex_admin_token");
+            if (!token) {
+                router.push("/login?redirect=/signature");
+            } else {
+                setIsAuthenticated(true);
+            }
+        } catch (e) {
+            console.error("Auth check failed", e);
+            router.push("/login");
         }
     }, [router]);
 
@@ -185,6 +189,7 @@ export default function SignaturePage() {
             // @ts-ignore
             const GIFEncoderModule = (await import('gif-encoder-2'));
             const GIFEncoder = GIFEncoderModule.default || GIFEncoderModule;
+            const { toPng } = await import('html-to-image');
 
             // Setup GIF Encoder
             const width = signatureRef.current.offsetWidth * 2;
@@ -255,10 +260,10 @@ export default function SignaturePage() {
         }
     };
 
-    // ... Copy Image & Downlaod HTML (Same as before) ...
     const handleCopyImage = async () => {
         if (!signatureRef.current) return;
         try {
+            const { toBlob } = await import('html-to-image');
             const blob = await toBlob(signatureRef.current, { backgroundColor: '#ffffff', pixelRatio: 2 });
             if (blob) {
                 await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
